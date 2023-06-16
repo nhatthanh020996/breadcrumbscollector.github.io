@@ -23,10 +23,16 @@
     <loc>https://nhatthanh020996.github.io/2017/11/04/istio-install_and_example/</loc>
     <lastmod>2021-11-04T12:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://nhatthanh020996.github.io/tags/pooling/</loc>
+    <lastmod>2021-11-04T12:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://nhatthanh020996.github.io/tags/postgresql/</loc>
     <lastmod>2021-11-04T12:00:00+00:00</lastmod>
   </url><url>
     <loc>https://nhatthanh020996.github.io/post/</loc>
+    <lastmod>2021-11-04T12:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://nhatthanh020996.github.io/tags/socket/</loc>
     <lastmod>2021-11-04T12:00:00+00:00</lastmod>
   </url><url>
     <loc>https://nhatthanh020996.github.io/2017/11/04/istio-install_and_example/</loc>
@@ -42,5 +48,7 @@
     <lastmod>2021-11-04T12:00:00+00:00</lastmod>
   </url><url>
     <loc>https://nhatthanh020996.github.io/about/</loc>
+  </url><url>
+    <loc>https://nhatthanh020996.github.io/tags/tcp/ip/</loc>
   </url>
 </urlset>
