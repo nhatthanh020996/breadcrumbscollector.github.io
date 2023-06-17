@@ -10,20 +10,20 @@
     <meta property="og:type" content="article">
 
     
-    <meta property="og:image" content="https://nhatthanh020996.github.io//img/posts/isolation/title_image.jpeg">
-    <meta property="twitter:image" content="https://nhatthanh020996.github.io//img/posts/isolation/title_image.jpeg" />
+    <meta property="og:image" content="/img/posts/isolation/title_image.jpeg">
+    <meta property="twitter:image" content="/img/posts/isolation/title_image.jpeg" />
     
 
     
-    <meta name="title" content="" />
-    <meta property="og:title" content="" />
-    <meta property="twitter:title" content="" />
+    <meta name="title" content="Isolation" />
+    <meta property="og:title" content="Isolation" />
+    <meta property="twitter:title" content="Isolation" />
     
 
     
-    <meta name="description" content="赵化冰，程序员, 开源爱好者，生活探险家 | 这里是 赵化冰 的博客，与你一起发现更大的世界。">
-    <meta property="og:description" content="赵化冰，程序员, 开源爱好者，生活探险家 | 这里是 赵化冰 的博客，与你一起发现更大的世界。" />
-    <meta property="twitter:description" content="赵化冰，程序员, 开源爱好者，生活探险家 | 这里是 赵化冰 的博客，与你一起发现更大的世界。" />
+    <meta name="description" content="Isolation là tính chất bị underated nhất trong ACID, trong bài viết này mình xin trình bày rõ hơn về tính chất này cũng như đưa ra các trường hợp cần setup đúng isolation level trong thực tế">
+    <meta property="og:description" content="Isolation là tính chất bị underated nhất trong ACID, trong bài viết này mình xin trình bày rõ hơn về tính chất này cũng như đưa ra các trường hợp cần setup đúng isolation level trong thực tế" />
+    <meta property="twitter:description" content="Isolation là tính chất bị underated nhất trong ACID, trong bài viết này mình xin trình bày rõ hơn về tính chất này cũng như đưa ra các trường hợp cần setup đúng isolation level trong thực tế" />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="networing, operating system, computer architecture, python, socket programing, database">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Categories | breadcrumbscollector</title>
+    <title>Isolation | breadcrumbscollector</title>
 
-    <link rel="canonical" href="/categories/">
+    <link rel="canonical" href="/isolation/">
 
     
     
@@ -149,14 +149,49 @@
 
 
 
-<header class="intro-header" style="background-image: url('/img/posts/isolation/title_image.jpeg')">
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/posts/isolation/title_image.jpeg')
+    }
+</style>
+
+<header class="intro-header" >
+
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
-                <div class="site-heading">
-                    <h1>breadcrumbscollector </h1>
-                    
-		    <span class="subheading"></span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/acid" title="ACID">
+                            ACID
+                        </a>
+                        
+                        <a class="tag" href="/tags/database" title="Database">
+                            Database
+                        </a>
+                        
+                        <a class="tag" href="/tags/postgresql" title="PostgreSQL">
+                            PostgreSQL
+                        </a>
+                        
+                    </div>
+                    <h1>Isolation</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                Admin
+                             
+                            on 
+                            Thursday, November 4, 2021
+                            
+                            
+                            
+                            
+                    </span>
                 </div>
             </div>
         </div>
@@ -169,13 +204,62 @@
 <article>
     <div class="container">
         <div class="row">
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
                 col-md-10 col-md-offset-1
                 post-container">
 
-         	
+                
+                <h2 id="服务网格简介">服务网格简介</h2>
+<p><strong>服务网格</strong>（Service Mesh）是为解决微服务的通信和治理而出现的一种<strong>架构模式</strong>。</p>
+<p>服务网格将服务间通讯以及与此相关的管理控制功能从业务程序中下移到一个基础设施层，从而彻底隔离了业务逻辑和服务通讯两个关注点。采用服务网格后，应用开发者只需要关注并实现应用业务逻辑。服务之间的通信，包括服务发现，通讯的可靠性，通讯的安全性，服务路由等由服务网格层进行处理，并对应用程序透明.</p>
+<p>让我们来回顾一下微服务架构的发展过程。在出现服务网格之前，我们在微服务应用程序进程内处理服务通讯逻辑，包括服务发现，熔断，重试，超时等逻辑，如下图所示：<br>
+
+  <img src="/img/istio-install_and_example/5-a.png" alt="">
+
+<br>
+通过对这部分负责服务通讯的逻辑进行抽象和归纳，可以形成一个代码库供应用程序调用。但应用程序还是需要处理和各种语言代码库的调用细节，并且各种代码库互不兼容，导致对应用程序使用的语言和代码框架有较大限制。</p>
+<p>如果我们更进一步，将这部分逻辑从应用程序进程中抽取出来，作为一个单独的进程进行部署，并将其作为服务间的通信代理，如下图所示：<br>
+
+  <img src="/img/istio-install_and_example/6-a.png" alt="">
+
+<br>
+因为通讯代理进程和应用进程一起部署，因此形象地把这种部署方式称为“sidecar”（三轮摩托的挎斗）。
+
+  <img src="/img/istio-install_and_example/sidecar.jpg" alt="">
+
+
+应用间的所有流量都需要经过代理，由于代理以sidecar方式和应用部署在同一台主机上，应用和代理之间的通讯被认为是可靠的。然后由代理来负责找到目的服务并负责通讯的可靠性和安全等问题。</p>
+<p>当服务大量部署时，随着服务部署的sidecar代理之间的连接形成了一个如下图所示的网格，被称之为Service Mesh（服务网格），从而得出如下的服务网格定义。</p>
+<p><em>服务网格是一个基础设施层，用于处理服务间通信。云原生应用有着复杂的服务拓扑，服务网格保证请求可以在这些拓扑中可靠地穿梭。在实际应用当中，服务网格通常是由一系列轻量级的网络代理组成的，它们与应用程序部署在一起，但应用程序不需要知道它们的存在。</em></p>
+<p>_William Morgan <em><a href="https://buoyant.io/2017/04/25/whats-a-service-mesh-and-why-do-i-need-one/"><em>WHAT’S A SERVICE MESH? AND WHY DO I NEED ONE?</em></a></em>                                               _</p>
+<p>
+  <img src="/img/istio-install_and_example/mesh1.png" alt="">
+
+</p>
+
+                
+
+                
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/pgbouncer/" data-toggle="tooltip" data-placement="top" title="Pgbouncer">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/how-to-optimize-sql-query/" data-toggle="tooltip" data-placement="top" title="How to optimize sql query">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+                
+
                 
 
 
@@ -194,8 +278,25 @@
 </script>
 
 
-
             </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
             
             <div class="
                 col-lg-8 col-lg-offset-2
@@ -214,19 +315,19 @@
                         
                         
                         <a href="/tags/database" title="database">
-                        database
+                            database
                         </a>
                         
                         
                         
                         <a href="/tags/pooling" title="pooling">
-                        pooling
+                            pooling
                         </a>
                         
                         
                         
                         <a href="/tags/postgresql" title="postgresql">
-                        postgresql
+                            postgresql
                         </a>
                         
                         
