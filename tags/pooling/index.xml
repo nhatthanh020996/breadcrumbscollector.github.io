@@ -8,21 +8,21 @@
     <language>en-us</language>
     <lastBuildDate>Thu, 04 Nov 2021 12:00:00 +0000</lastBuildDate><atom:link href="https://nhatthanh020996.github.io/tags/pooling/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>How database read records from disk</title>
+      <link>https://nhatthanh020996.github.io/how-database-read-records-from-disk/</link>
+      <pubDate>Thu, 04 Nov 2021 12:00:00 +0000</pubDate>
+      
+      <guid>https://nhatthanh020996.github.io/how-database-read-records-from-disk/</guid>
+      <description>Dadabase disk page </description>
+    </item>
+    
+    <item>
       <title>Pgbouncer</title>
       <link>https://nhatthanh020996.github.io/pgbouncer/</link>
       <pubDate>Thu, 04 Nov 2021 12:00:00 +0000</pubDate>
       
       <guid>https://nhatthanh020996.github.io/pgbouncer/</guid>
       <description>Pgbouncer </description>
-    </item>
-    
-    <item>
-      <title>Socket Programming</title>
-      <link>https://nhatthanh020996.github.io/socket-programing/</link>
-      <pubDate>Thu, 04 Nov 2021 12:00:00 +0000</pubDate>
-      
-      <guid>https://nhatthanh020996.github.io/socket-programing/</guid>
-      <description>Dadabase disk page </description>
     </item>
     
   </channel>
