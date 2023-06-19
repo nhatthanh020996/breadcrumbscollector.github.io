@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on breadcrumbscollector</title>
+    <link>https://nhatthanh020996.github.io/tags/python/</link>
+    <description>Recent content in Python on breadcrumbscollector</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 04 Nov 2022 12:00:00 +0000</lastBuildDate><atom:link href="https://nhatthanh020996.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Does python function use calling value or calling reference?</title>
+      <link>https://nhatthanh020996.github.io/does-python-function-use-calling-value-or-calling-reference/</link>
+      <pubDate>Fri, 04 Nov 2022 12:00:00 +0000</pubDate>
+      
+      <guid>https://nhatthanh020996.github.io/does-python-function-use-calling-value-or-calling-reference/</guid>
+      <description>Introduction. Starting with some definitions in C. 1. Variable in C. We start with the following simple example:
+#include &amp;lt;stdio.h&amp;gt; int main() { int x; printf(&amp;#34;address of x: %p&amp;#34;, &amp;amp;x); printf(&amp;#34;\nvalue of x: %d&amp;#34;, x); x = 1 printf(&amp;#34;address of x: %p&amp;#34;, &amp;amp;x); printf(&amp;#34;\nvalue of x: %d&amp;#34;, x); return 0; } // the result will be: /* address of x: 0x7ffcd47a5cc4 value of x: 0 address of x: 0x7ffcd47a5cc4 value of x: 1 */ In the above piece of code, when declaring x, we create a space that occupies 4bytes in memory for x variable.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="breadcrumbscollector">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="/img/posts/isolation/title_image.jpeg">
+    <meta property="twitter:image" content="/img/posts/isolation/title_image.jpeg" />
+    
+
+    
+    <meta name="title" content="Does python function use calling value or calling reference?" />
+    <meta property="og:title" content="Does python function use calling value or calling reference?" />
+    <meta property="twitter:title" content="Does python function use calling value or calling reference?" />
+    
+
+    
+    <meta name="description" content="赵化冰，程序员, 开源爱好者，生活探险家 | 这里是 赵化冰 的博客，与你一起发现更大的世界。">
+    <meta property="og:description" content="赵化冰，程序员, 开源爱好者，生活探险家 | 这里是 赵化冰 的博客，与你一起发现更大的世界。" />
+    <meta property="twitter:description" content="赵化冰，程序员, 开源爱好者，生活探险家 | 这里是 赵化冰 的博客，与你一起发现更大的世界。" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="networing, operating system, computer architecture, python, socket programing, database">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Does python function use calling value or calling reference? | breadcrumbscollector</title>
+
+    <link rel="canonical" href="/does-python-function-use-calling-value-or-calling-reference/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">breadcrumbscollector</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/archive//">ARCHIVE</a></li>
+                    
+                        <li><a href="/notes//">NOTES</a></li>
+                    
+                        <li><a href="/about/index//">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/posts/isolation/title_image.jpeg')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/python" title="Python">
+                            Python
+                        </a>
+                        
+                    </div>
+                    <h1>Does python function use calling value or calling reference?</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                Admin
+                             
+                            on 
+                            Friday, November 4, 2022
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <h2 id="introduction">Introduction.</h2>
+<h2 id="starting-with-some-definitions-in-c">Starting with some definitions in C.</h2>
+<h3 id="1-variable-in-c">1. Variable in C.</h3>
+<p>We start with the following simple example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#ff79c6">#include</span> <span style="color:#ff79c6">&lt;stdio.h&gt;</span><span style="color:#ff79c6">
+</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd">int</span> <span style="color:#50fa7b">main</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> x;
+</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">printf</span>(<span style="color:#f1fa8c">&#34;address of x: %p&#34;</span>, <span style="color:#ff79c6">&amp;</span>x);
+</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">printf</span>(<span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">\n</span><span style="color:#f1fa8c">value of x: %d&#34;</span>, x);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        x <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">printf</span>(<span style="color:#f1fa8c">&#34;address of x: %p&#34;</span>, <span style="color:#ff79c6">&amp;</span>x);
+</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">printf</span>(<span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">\n</span><span style="color:#f1fa8c">value of x: %d&#34;</span>, x);
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> <span style="color:#bd93f9">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// the result will be:
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span><span style="color:#6272a4">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">address of x: 0x7ffcd47a5cc4
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">value of x: 0
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">address of x: 0x7ffcd47a5cc4
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">value of x: 1
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">*/</span>
+</span></span></code></pre></div><p>In the above piece of code, when declaring x, we create a space that occupies 4bytes in memory for x variable. This space holds zero value, in this cace zero value equals to 0.</p>
+<p>When we assign x to 1, the space of x in memory will hold 1.</p>
+<h3 id="2-passing-by-value-in-c">2. Passing by value in C.</h3>
+<p>We have a the following function:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#ff79c6">#include</span><span style="color:#ff79c6">&lt;stdio.h&gt;</span><span style="color:#ff79c6">
+</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd">int</span> <span style="color:#50fa7b">sum</span>(<span style="color:#8be9fd">int</span> a, <span style="color:#8be9fd">int</span> b)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#ff79c6">return</span> a <span style="color:#ff79c6">+</span> b
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd">int</span> <span style="color:#50fa7b">main</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#8be9fd">int</span> x;
+</span></span><span style="display:flex;"><span>	<span style="color:#8be9fd">int</span> y;
+</span></span><span style="display:flex;"><span>	x <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">1</span>;
+</span></span><span style="display:flex;"><span>	y <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">2</span>;
+</span></span><span style="display:flex;"><span>	s <span style="color:#ff79c6">=</span> <span style="color:#50fa7b">sum</span>(x, y);
+</span></span><span style="display:flex;"><span>	<span style="color:#50fa7b">printf</span>(<span style="color:#f1fa8c">&#34;s: %d&#34;</span>, s);
+</span></span><span style="display:flex;"><span>	<span style="color:#ff79c6">return</span> <span style="color:#bd93f9">0</span>;	 
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>In the above example, the sum() function contains a and b as local variables, which are stored in the stack frame. When the program reaches the line s = sum(x, y) in the main() function, a will copy the literal value of x, b will copy the literal value of y, and sum() function will return 3. Since the parameters in sum() function are passed by the literal value of outside function variables, we call this passing by value.</p>
+<h3 id="3-passing-by-reference-in-c">3. Passing by reference in C.</h3>
+<p>We have a the following function:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#ff79c6">#include</span><span style="color:#ff79c6">&lt;stdio.h&gt;</span><span style="color:#ff79c6">
+</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd">void</span> <span style="color:#50fa7b">swap</span>(<span style="color:#8be9fd">int</span> <span style="color:#ff79c6">*</span>a, <span style="color:#8be9fd">int</span> <span style="color:#ff79c6">*</span>b)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> tmp <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">*</span>a;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">*</span>a <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">*</span>b;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">*</span>b <span style="color:#ff79c6">=</span> tmp;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd">int</span> <span style="color:#50fa7b">main</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> x;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> y;
+</span></span><span style="display:flex;"><span>    x <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">1</span>;
+</span></span><span style="display:flex;"><span>    y <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">2</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">swap</span>(<span style="color:#ff79c6">&amp;</span>x, <span style="color:#ff79c6">&amp;</span>y);
+</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">printf</span>(<span style="color:#f1fa8c">&#34;value of x: %d&#34;</span>, x);
+</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">printf</span>(<span style="color:#f1fa8c">&#34;</span><span style="color:#f1fa8c">\n</span><span style="color:#f1fa8c">value of y: %d&#34;</span>, y);
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> <span style="color:#bd93f9">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">value of x: 2
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">value of y: 1
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">*/</span>
+</span></span></code></pre></div><p>In the above piece of code, swap() function receives parameter as pointers instead of value. Thereby, it call this passing by references.</p>
+<h2 id="in-python">In Python.</h2>
+<h3 id="1-variable-in-python">1. Variable in Python.</h3>
+<p>The concept of variable in python is understood differently compared to C. In Python, we have some concepts: name and object. We’ll go through the following example to understand more about these definition, and see the differences between C and Python:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Python" data-lang="Python"><span style="display:flex;"><span>x <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">2337</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">print</span>(<span style="color:#f1fa8c">&#39;address of x: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#39;</span><span style="color:#ff79c6">.</span>format(<span style="color:#8be9fd;font-style:italic">id</span>(x)))
+</span></span><span style="display:flex;"><span>x <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">2338</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">print</span>(<span style="color:#f1fa8c">&#39;address of x after reassignment: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#39;</span><span style="color:#ff79c6">.</span>format(<span style="color:#8be9fd;font-style:italic">id</span>(x)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>y <span style="color:#ff79c6">=</span> x
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">print</span>(<span style="color:#f1fa8c">&#39;address of y: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#39;</span><span style="color:#ff79c6">.</span>format(<span style="color:#8be9fd;font-style:italic">id</span>(y)))
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">print</span>(<span style="color:#f1fa8c">&#39;do x and y point to the same object in memory? :</span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#39;</span><span style="color:#ff79c6">.</span>format(x <span style="color:#ff79c6">is</span> y))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>y <span style="color:#ff79c6">+=</span> <span style="color:#bd93f9">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">print</span>(<span style="color:#f1fa8c">&#39;address of y after adding 1: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#39;</span><span style="color:#ff79c6">.</span>format(<span style="color:#8be9fd;font-style:italic">id</span>(y)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f1fa8c">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">address of x: 140080412256560
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">address of x after reassignment: 140080412256592
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">address of y: 140080412256592
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">do x and y point to the same object in memory? :True
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">address of y after adding 1: 140080412257520
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">&#34;&#34;&#34;</span>
+</span></span></code></pre></div><p>Let’s explain the above result:</p>
+<ul>
+<li>
+<p><code>x = 1</code> an object that hold value 1 will be created in memory. In the CPython implementation, which is the reference implementation of Python, this object is implemented as a structure called PyObject in C.</p>
+</li>
+<li>
+<p>PyObject is a fundamental structure in CPython that represents a generic Python object. It contains information about <code>object’s type</code>, <code>reference count</code>, and other necessary details for proper memory management and manipulation.</p>
+</li>
+<li>
+<p><code>x = 2338</code>, <code>x</code> would be bound to the new PyObject. In previous PyObject that was bound to <code>x</code>, the value of reference count would be decrease to 0, this one would be swept from memory by garbage collector.</p>
+</li>
+<li>
+<p><code>y = x</code>, in memory, you would have a new name, but not necessarily a new object:</p>
+</li>
+<li>
+<p><code>y += 1</code> After the addition call, you are returned with a new Python object. Now, the memory looks like this:</p>
+</li>
+</ul>
+<p>We have some conclusions:</p>
+<ul>
+<li>
+<p>in the provided code snippet, <code>x</code> and <code>y</code> are indeed names or identifiers that can be used to refer to objects in memory.</p>
+</li>
+<li>
+<p>It’s important to note that, assignment statements in python bind the names to the objects in memory, without copying the values themselves.</p>
+</li>
+</ul>
+<h3 id="2-immutable-and-mutable-object-in-python">2. Immutable and mutable object in python.</h3>
+<p>In python, The immutable objects are objects whose value can not be modified after they created, the only way to change the names bound to an immutable object is to bind it to other object. On the other hand, mutable object can be modified after their creation.</p>
+<p>In python, there are several immutable objects, such as <code>int</code>, <code>float</code>, <code>str</code>, <code>bytes</code>, <code>tuple</code>. On the other hand, mutable objects in Python, such as <code>list</code> and <code>dict</code>.</p>
+<p>We make a clearance of immutable objects and mutable object with the following example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>x <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;hello world&#34;</span>
+</span></span><span style="display:flex;"><span>x[<span style="color:#bd93f9">0</span>] <span style="color:#ff79c6">=</span> H
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f1fa8c">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">result:
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">ERROR!
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">Traceback (most recent call last):
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">  File &#34;&lt;string&gt;&#34;, line 15, in &lt;module&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">TypeError: &#39;str&#39; object does not support item assignment
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">&#34;&#34;&#34;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>x <span style="color:#ff79c6">=</span> [<span style="color:#bd93f9">1</span>, <span style="color:#bd93f9">2</span>, <span style="color:#bd93f9">3</span>]
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">print</span>(<span style="color:#f1fa8c">&#39;the address of x: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#39;</span><span style="color:#ff79c6">.</span>format(<span style="color:#8be9fd;font-style:italic">id</span>(x)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>x <span style="color:#ff79c6">=</span> x<span style="color:#ff79c6">.</span>append(<span style="color:#bd93f9">4</span>)
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">print</span>(<span style="color:#f1fa8c">&#39;the address of x after modifying: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#39;</span><span style="color:#ff79c6">.</span>format(<span style="color:#8be9fd;font-style:italic">id</span>(x)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f1fa8c">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">result:
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">the address of x: 140343201072192
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">the address of x after modifying: 140343201072192
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">&#34;&#34;&#34;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>x <span style="color:#ff79c6">=</span> [<span style="color:#bd93f9">1</span>, <span style="color:#bd93f9">2</span>, <span style="color:#bd93f9">3</span>]
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">print</span>(<span style="color:#f1fa8c">&#39;the address of x: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#39;</span><span style="color:#ff79c6">.</span>format(<span style="color:#8be9fd;font-style:italic">id</span>(x)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>x<span style="color:#ff79c6">.</span>extend([<span style="color:#bd93f9">4</span>])
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">print</span>(<span style="color:#f1fa8c">&#39;the address of x after extending [4]: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#39;</span><span style="color:#ff79c6">.</span>format(<span style="color:#8be9fd;font-style:italic">id</span>(x)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>x <span style="color:#ff79c6">+=</span> [<span style="color:#bd93f9">5</span>]
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">print</span>(<span style="color:#f1fa8c">&#39;the address of x after extending [5]: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#39;</span><span style="color:#ff79c6">.</span>format(<span style="color:#8be9fd;font-style:italic">id</span>(x)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>x <span style="color:#ff79c6">=</span> x <span style="color:#ff79c6">+</span> [<span style="color:#bd93f9">6</span>]
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">print</span>(<span style="color:#f1fa8c">&#39;the address of x after extending [6]: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#39;</span><span style="color:#ff79c6">.</span>format(<span style="color:#8be9fd;font-style:italic">id</span>(x)))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f1fa8c">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">the address of x: 139937477218944
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">the address of x after extending [4]: 139937477218944
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">the address of x after extending [5]: 139937477218944
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">the address of x after extending [6]: 139937477234432
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f1fa8c">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">in the above result, after executing `x += [5]` line, the a address of x stays
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">the same, because in behind the scene, the operator `+=` will be implemented 
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">virtually like:
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">	class List:
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">			def __iadd__(self, other)&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">					self.extend(other)
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">					return self
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">On the other hand, after executing `x = x + [6]` line, the a address of x has
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">been changed. It&#39;s because the name `x` binds to the object that hold the value
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">[1, 2, 3, 4, 5] + [6] instead of binding to the previous one.
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">&#34;&#34;&#34;</span>
+</span></span></code></pre></div><p>The above code snippets are self-explanatory, so there is no need to add unnecessary explanation here.</p>
+<h3 id="3-python-uses-calling-by-value-or-reference">3. Python uses calling by value or reference.</h3>
+<p>Now, we have sufficient ingredients to answer the question that appear in the title of this article. To be more understandable, we’re going to walk through the following examples.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>n <span style="color:#ff79c6">=</span> [<span style="color:#bd93f9">4</span>]
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">power</span>(l):
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">print</span>(<span style="color:#f1fa8c">&#34;local variables: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span><span style="color:#ff79c6">.</span>format(<span style="color:#8be9fd;font-style:italic">locals</span>()))
+</span></span><span style="display:flex;"><span>        l[<span style="color:#bd93f9">0</span>] <span style="color:#ff79c6">*=</span> l[<span style="color:#bd93f9">0</span>]
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> l
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>power(n)
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">print</span>(<span style="color:#f1fa8c">&#34;n: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span><span style="color:#ff79c6">.</span>format(n))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f1fa8c">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">result:
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">n: [16]
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f1fa8c">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">- When program reaches the line `power(n)` function, the stack frame of power 
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">function will create a namespace that contains one or more pair
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">(local_variable_name, object_bind_to_the_name). The first local name is `l`,
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">in this case, `l` binds to the object that holds [4]. Consequently, after completely
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">executing power() function, the value of object that n is bound is modified 
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">accordingly.
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">&#34;&#34;&#34;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>n <span style="color:#ff79c6">=</span> [<span style="color:#bd93f9">4</span>]
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">power</span>(l):
+</span></span><span style="display:flex;"><span>		<span style="color:#8be9fd;font-style:italic">print</span>(<span style="color:#f1fa8c">&#34;local variables: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span><span style="color:#ff79c6">.</span>format(<span style="color:#8be9fd;font-style:italic">locals</span>()))
+</span></span><span style="display:flex;"><span>		l <span style="color:#ff79c6">=</span> [<span style="color:#bd93f9">5</span>]
+</span></span><span style="display:flex;"><span>		<span style="color:#8be9fd;font-style:italic">print</span>(<span style="color:#f1fa8c">&#34;local variables after reassignment: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span><span style="color:#ff79c6">.</span>format(<span style="color:#8be9fd;font-style:italic">locals</span>()))
+</span></span><span style="display:flex;"><span>		l[<span style="color:#bd93f9">0</span>] <span style="color:#ff79c6">*=</span> l[<span style="color:#bd93f9">0</span>]
+</span></span><span style="display:flex;"><span>		<span style="color:#ff79c6">return</span> l
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>power(n)
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">print</span>(<span style="color:#f1fa8c">&#34;n: </span><span style="color:#f1fa8c">{}</span><span style="color:#f1fa8c">&#34;</span><span style="color:#ff79c6">.</span>format(n))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f1fa8c">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">result:
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">local variables: {&#39;l&#39;: [4]}
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">local variables after reassignment: {&#39;l&#39;: [5]}
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">n: [4]
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f1fa8c">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">The result of the example is not the same as the previous one, Why&#39;s that?
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">It&#39;s because, although `l` is bound to object of [4] initially, but it was
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">reassigned to [5] later on, it means that `l` was rebound to a new object
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">that holds [5] as it&#39;s value. Consequently, the object `x` was bound to was
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">not modified.
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">&#34;&#34;&#34;</span>
+</span></span></code></pre></div><h2 id="conclusion">Conclusion.</h2>
+
+
+                
+
+                
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/how-database-read-records-from-disk/" data-toggle="tooltip" data-placement="top" title="How database read records from disk">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+                
+
+                
+
+
+<script src="https://giscus.app/client.js"
+        data-repo="nhatthanh020996/nhatthanh020996.github.io"
+        data-repo-id="nhatthanh020996/nhatthanh020996.github.io"
+        data-category="Announcements"
+        data-category-id="your category id"
+        data-mapping="pathname"
+        data-reactions-enabled="0"
+        data-emit-metadata=""
+        data-theme="light"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/database" title="database">
+                            database
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/pooling" title="pooling">
+                            pooling
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/postgresql" title="postgresql">
+                            postgresql
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:nhatthanh020996@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/nhatthanh020996">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/tran-nhat-thanh-9219bb184/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; breadcrumbscollector 2023
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>

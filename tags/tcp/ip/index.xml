@@ -12,7 +12,7 @@
       <pubDate>Thu, 04 Nov 2021 12:00:00 +0000</pubDate>
       
       <guid>https://nhatthanh020996.github.io/socket-programming/</guid>
-      <description>Socket Programming </description>
+      <description>Mở đầu. A socket is a fundamental component provided by operating system that enables communication between processes, whether they reside on the same machine or different machines. To facilitate effective communication, processes must adhere to specific protocols, similar to humnans utilize a common language to communicate, TCP/IP stands out as the prevailing choice in modern times. This article will primarily focus on TCP/IP due to its widespread adoption. To establish a clear understanding, let&amp;rsquo;s define a couple of key terms:</description>
     </item>
     
   </channel>
