@@ -6,7 +6,16 @@
     <description>Recent content in Tech on breadcrumbscollector</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 15 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://nhatthanh020996.github.io/categories/tech/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 25 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://nhatthanh020996.github.io/categories/tech/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Clean Architecture</title>
+      <link>https://nhatthanh020996.github.io/clean/architecture/</link>
+      <pubDate>Sun, 25 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://nhatthanh020996.github.io/clean/architecture/</guid>
+      <description>Mở đầu. Đầu tiên chúng ta phải thống nhất lại rằng Clean Architecture là 1 tên gọi được Robert Martin - một lập trình viên nổi tiếng người Mỹ đặt tên trong cuốn sách cùng tên nổi tiếng của ông, nó cũng giống như A architecture hay B architecture nào đó. Vì vậy Clean Architecture không nên hiểu là một kiến trúc tốt trong mọi hoàn cảnh. Dựa trên nhiều yếu tố như thời gian, độ phức tạp, tính thay đổi của dự án người lập trình viên sẽ chọn ra chọn đâu là kiến trúc code phù hợp nhất và nó không nhất thiết phải là Clean Architecture.</description>
+    </item>
+    
     <item>
       <title>Understanding Variable Behavior in Python and C: A Comparison</title>
       <link>https://nhatthanh020996.github.io/does-python-function-use-calling-value-or-calling-reference/</link>
@@ -70,7 +79,7 @@ Phantom reads: if you run a query twice, the second query could see different ro
       <pubDate>Sun, 11 Jun 2023 00:00:00 +0000</pubDate>
       
       <guid>https://nhatthanh020996.github.io/socket-programming/</guid>
-      <description>Mở đầu. A socket is a fundamental component provided by operating system that enables communication between processes, whether they reside on the same machine or different machines. To facilitate effective communication, processes must adhere to specific protocols, similar to humnans utilize a common language to communicate, TCP/IP stands out as the prevailing choice in modern times. This article will primarily focus on TCP/IP due to its widespread adoption. To establish a clear understanding, let&amp;rsquo;s define a couple of key terms:</description>
+      <description>Introduction. Conclusion. </description>
     </item>
     
     <item>

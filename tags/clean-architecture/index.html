@@ -10,20 +10,20 @@
     <meta property="og:type" content="article">
 
     
-    <meta property="og:image" content="/img/posts/isolation/title_image.jpeg">
-    <meta property="twitter:image" content="/img/posts/isolation/title_image.jpeg" />
+    <meta property="og:image" content="https://nhatthanh020996.github.io/img/background.jpeg">
+    <meta property="twitter:image" content="https://nhatthanh020996.github.io/img/background.jpeg" />
     
 
     
-    <meta name="title" content="Isolation property in ACID" />
-    <meta property="og:title" content="Isolation property in ACID" />
-    <meta property="twitter:title" content="Isolation property in ACID" />
+    <meta name="title" content="clean-architecture" />
+    <meta property="og:title" content="clean-architecture" />
+    <meta property="twitter:title" content="clean-architecture" />
     
 
     
-    <meta name="description" content="Discover read phenomena and isolation levels in PostgreSQL databases, ensuring data consistency and concurrency control.">
-    <meta property="og:description" content="Discover read phenomena and isolation levels in PostgreSQL databases, ensuring data consistency and concurrency control." />
-    <meta property="twitter:description" content="Discover read phenomena and isolation levels in PostgreSQL databases, ensuring data consistency and concurrency control." />
+    <meta name="description" content="赵化冰，程序员, 开源爱好者，生活探险家 | 这里是 赵化冰 的博客，与你一起发现更大的世界。">
+    <meta property="og:description" content="赵化冰，程序员, 开源爱好者，生活探险家 | 这里是 赵化冰 的博客，与你一起发现更大的世界。" />
+    <meta property="twitter:description" content="赵化冰，程序员, 开源爱好者，生活探险家 | 这里是 赵化冰 的博客，与你一起发现更大的世界。" />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="networing, operating system, computer architecture, python, socket programing, database">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Isolation property in ACID | breadcrumbscollector</title>
+    <title>clean-architecture | breadcrumbscollector</title>
 
-    <link rel="canonical" href="/isolation/">
+    <link rel="canonical" href="/tags/clean-architecture/">
 
     
     
@@ -155,45 +155,14 @@
 
 
 
-
-<style type="text/css">
-    header.intro-header {
-        background-image: url('/img/posts/isolation/title_image.jpeg')
-    }
-</style>
-
-<header class="intro-header" >
-
+<header class="intro-header" style="background-image: url('/img/background.jpeg')">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="post-heading">
-                    <div class="tags">
-                        
-                        <a class="tag" href="/tags/database" title="Database">
-                            Database
-                        </a>
-                        
-                        <a class="tag" href="/tags/postgresql" title="PostgreSQL">
-                            PostgreSQL
-                        </a>
-                        
-                    </div>
-                    <h1>Isolation property in ACID</h1>
-                    <h2 class="subheading"></h2>
-                    <span class="meta">
-                        
-                            Posted by 
-                            
-                                Admin
-                             
-                            on 
-                            Tuesday, June 13, 2023
-                            
-                            
-                            
-                            
-                    </span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>breadcrumbscollector </h1>
+                    
+		    <span class="subheading"></span>
                 </div>
             </div>
         </div>
@@ -202,170 +171,188 @@
 
 
 
-
-<article>
-    <div class="container">
-        <div class="row">
-
+  
+<div data-pagefind-ignore="all" class="container">
+    <div class="row">
+        
+        
+   	    <div class="
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container
+        ">
             
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                post-container">
+<div data-pagefind-ignore="all">
 
-                
-                <h2 id="read-phenomena">Read Phenomena</h2>
-<ul>
-<li>
-<p>Dirty reads: if you are in an inflight transaction, you can read something that some other transaction has written but didn’t really commit yet.</p>
-</li>
-<li>
-<p>Non-repeatable reads: if you read a row once, then read it again, the second read could see different data if another transaction has modified it.</p>
-</li>
-<li>
-<p>Phantom reads: if you run a query twice, the second query could see different rows if another transaction has inserted or deleted them.</p>
-</li>
-<li>
-<p>Lost updates: if two transactions try to update the same row, the second transaction might overwrite the changes made by the first transaction, causing the first transaction to lose its changes.</p>
-</li>
-</ul>
-<h2 id="isolation-levels">Isolation Levels</h2>
-<ul>
-<li>
-<p>Read Uncommitted</p>
-</li>
-<li>
-<p>Read Committed: The transaction can see the rows that have been committed by other transactions.</p>
-</li>
-<li>
-<p>Repeatable Read: The transaction ensures that when a query reads a row, that row will remain unchanged while it&rsquo;s running.</p>
-</li>
-<li>
-<p>Snapshot: Each query in a transaction only sees changes that have been committed up to the start of the transaction. It’s like a snapshot version of the database at that moment.</p>
-</li>
-<li>
-<p>Serializable: Transactions are run as if they are serialized one after the other.</p>
-</li>
-</ul>
-<h2 id="isolation-level-vs-read-phenomena">Isolation Level vs Read Phenomena</h2>
-<h2 id="isolation-in-postgresql">Isolation in PostgreSQL</h2>
-
-
-                
-
-                
-                <hr>
-                <ul class="pager">
-                    
-                    <li class="previous">
-                        <a href="/pgbouncer/" data-toggle="tooltip" data-placement="top" title="Pgbouncer">&larr;
-                            Previous Post</a>
-                    </li>
-                    
-                    
-                    <li class="next">
-                        <a href="/how-to-optimize-sql-query/" data-toggle="tooltip" data-placement="top" title="How to optimize sql query">Next
-                            Post &rarr;</a>
-                    </li>
-                    
-                </ul>
-                
-
-                
-
-
-<script src="https://giscus.app/client.js"
-        data-repo="nhatthanh020996/nhatthanh020996.github.io"
-        data-repo-id="nhatthanh020996/nhatthanh020996.github.io"
-        data-category="Announcements"
-        data-category-id="your category id"
-        data-mapping="pathname"
-        data-reactions-enabled="0"
-        data-emit-metadata=""
-        data-theme="light"
-        data-lang="en"
-        crossorigin="anonymous"
-        async>
-</script>
-
-
-            </div>
-
-            
-            
-            <div class="
-                col-lg-2 col-lg-offset-0
-                visible-lg-block
-                sidebar-container
-                catalog-container">
-                <div class="side-catalog">
-                    <hr class="hidden-sm hidden-xs">
-                    <h5>
-                        <a class="catalog-toggle" href="#">CATALOG</a>
-                    </h5>
-                    <ul class="catalog-body"></ul>
-                </div>
-            </div>
-            
-
-            
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                sidebar-container">
-
-                
-                
-                <section>
-                    <hr class="hidden-sm hidden-xs">
-                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
-                    <div class="tags">
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        <a href="/tags/database" title="database">
-                            database
-                        </a>
-                        
-                        
-                        
-                        
-                        
-                        <a href="/tags/pooling" title="pooling">
-                            pooling
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/postgresql" title="postgresql">
-                            postgresql
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/python" title="python">
-                            python
-                        </a>
-                        
-                        
-                        
-                        
-                        
-                        
-                    </div>
-                </section>
-                
-
-                
-                
-            </div>
+<div class="post-preview">
+    <a href="https://nhatthanh020996.github.io/clean/architecture/">
+        <h2 class="post-title">
+            Clean Architecture
+        </h2>
+	
+        <div class="post-content-preview">
+	
+            Mỗi lập trình viên luôn muốn tạo ra những phần mềm mà nó dễ dàng thay đổi lúc business logic thay đổi, hoặc yêu cầu kỹ thuật có sự thay đổi. Họ muốn phần mềm của họ dễ dàng mở rộng, thêm những tính năng mới mà không ảnh hưởng đến những tính năng đang chạy. Để làm được điều đó chúng ta cần tích luỹ nhiều kinh nghiệm, kiến thức. Vậy có một mô hình chung nào, hoặc một tư tưởng thiết kế nào giúp ta làm điều đó dễ dàng hơn. Trong bài viết này mình xin giới thiệu một kiến trúc như thế, nó gọi là Clean Architecture.
+        
         </div>
-    </div>
-</article>
+    </a>
+    <p class="post-meta">
+    
+        Posted by Admin on Sunday, June 25, 2023
+        
+        
+    
+    </p>
+
+</div>
+<hr>
+
+</div>
+
+            
+
+
+
+       	</div>
+        
+
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+	
+    <section class="visible-md visible-lg">
+	
+        <div class="short-about">
+            
+            <a href="/about">
+               <img src="/img/avatar.png" alt="avatar" style="cursor: pointer" />
+            </a>
+            
+            
+                <p>Backend Developer</p>
+            
+           
+           <ul class="list-inline">
+               
+               <li>
+                   <a href="mailto:nhatthanh020996@gmail.com">
+                      <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                      </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://github.com/nhatthanh020996">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://www.linkedin.com/in/tran-nhat-thanh-9219bb184/">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+            
+            
+               
+               
+               
+               
+                </ul>
+            </div>
+    </section>
+	
+    
+    
+    <section>
+        <hr>
+        <h5>QUICK LINKS</h5>
+        <ul class="list-inline">
+            
+        </ul>
+    </section>
+    
+    
+    
+    <section>
+        <hr class="hidden-sm hidden-xs">
+        <h5>FEATURED TAGS</h5>
+        <div class="tags">
+            
+            
+               
+            
+               
+            
+               
+                    <a href="/tags/database" title="database">
+                        database
+                    </a>
+               
+            
+               
+            
+               
+                    <a href="/tags/pooling" title="pooling">
+                        pooling
+                    </a>
+               
+            
+               
+                    <a href="/tags/postgresql" title="postgresql">
+                        postgresql
+                    </a>
+               
+            
+               
+                    <a href="/tags/python" title="python">
+                        python
+                    </a>
+               
+            
+               
+            
+               
+            
+        </div>
+    </section>
+    
+
+    
+    
+    
+</div>
+
+	</div>
+</div>
+
 
 
 

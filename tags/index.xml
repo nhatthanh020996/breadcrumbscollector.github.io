@@ -6,11 +6,29 @@
     <description>Recent content in Tags on breadcrumbscollector</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 15 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://nhatthanh020996.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 25 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://nhatthanh020996.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Python</title>
+      <title>clean-architecture</title>
+      <link>https://nhatthanh020996.github.io/tags/clean-architecture/</link>
+      <pubDate>Sun, 25 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://nhatthanh020996.github.io/tags/clean-architecture/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>django</title>
+      <link>https://nhatthanh020996.github.io/tags/django/</link>
+      <pubDate>Sun, 25 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://nhatthanh020996.github.io/tags/django/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
       <link>https://nhatthanh020996.github.io/tags/python/</link>
-      <pubDate>Thu, 15 Jun 2023 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 25 Jun 2023 00:00:00 +0000</pubDate>
       
       <guid>https://nhatthanh020996.github.io/tags/python/</guid>
       <description></description>
