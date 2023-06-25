@@ -244,7 +244,7 @@ chi phí ít nhất?</p>
 mà việc thay đổi môt lớp không làm ảnh hưởng đến những lớp còn lại, cách phân lớp này có thể đươc minh hoá như hình bên
 dưới.
 
-  <img src="/img/2018-03-29-what-is-service-mesh-and-istio/microservice.PNG" alt="">
+  <img src="/img/clean-architecture/layers.png" alt="">
 
 </p>
 <h3 id="entities">Entities.</h3>
@@ -317,26 +317,50 @@ những tính năng cơ bản như sau:</p>
 <li>Tác giả thêm, xoá, và chỉnh sửa bài viết.</li>
 <li>Đôc giả đọc bài.</li>
 <li>Độc giả tìm kiếm list những bài viết liên quan đến một tag name nào đó.</li>
-<li>&hellip;</li>
+<li>&hellip;
+Ở phần này mình chỉ đưa ra các bước để xây dựng code implement một tính năng đơn giản đó là list ra danh sách bài
+viết có trong blog. Những tính năng còn lại có thể implement bằng cách thức gần như tương tự.</li>
 </ul>
-<h3 id="entities-1">Entities.</h3>
-<p>Ở lớp Entities chúng ta sẽ có những entities bao gồm: Post, Comment, Tag. Chúng ta sẽ biểu diễn những
-entities này trong python như sau (ở đây mình chỉ biểu diễn một entity trong số này, những entity còn
-lại, các bạn có thể làm tương tự):</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff79c6">import</span> attr
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">from</span> datetime <span style="color:#ff79c6">import</span> datetime
+<h3 id="external-system-1">External System.</h3>
+<p>Web framework nằm ở External System chính là nơi đầu tiên tiếp nhận HTTP request, và ở đây nhiệm vụ của web framework
+chỉ là tiếp nhận HTTP request. Phần xử lý logic sẽ được gọi xuống UseCase layer để xử lý, sau đó web framework nhận lại
+kết quả trả ra từ UseCase và tạo HTTP response.</p>
+<p>
+  <img src="/img/clean-architecture/web-usecase.png" alt="">
+
+</p>
+<p>Ở đây ban đọc có thể thấy 1 instance <code>post_repository</code> và <code>list_posts_usecase</code> được khởi tạo trực tiếp từ External System,
+nó tuân theo goden rule mà mình đã nói đến ở phần trước.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff79c6">from</span> internal.usecases <span style="color:#ff79c6">import</span> ListPostsUsecase
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>@attr.s(frozen<span style="color:#ff79c6">=</span><span style="color:#ff79c6">True</span>)
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">PostEntity</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">id</span>: <span style="color:#8be9fd;font-style:italic">int</span> <span style="color:#ff79c6">=</span> attr<span style="color:#ff79c6">.</span>ib()
-</span></span><span style="display:flex;"><span>    title: <span style="color:#8be9fd;font-style:italic">str</span> <span style="color:#ff79c6">=</span> attr<span style="color:#ff79c6">.</span>ib()
-</span></span><span style="display:flex;"><span>    content: <span style="color:#8be9fd;font-style:italic">str</span> <span style="color:#ff79c6">=</span> attr<span style="color:#ff79c6">.</span>ib()
-</span></span><span style="display:flex;"><span>    created_at: datetime <span style="color:#ff79c6">=</span> attr<span style="color:#ff79c6">.</span>ib(default<span style="color:#ff79c6">=</span>datetime<span style="color:#ff79c6">.</span>now())
-</span></span><span style="display:flex;"><span>    update_at: datetime <span style="color:#ff79c6">=</span> attr<span style="color:#ff79c6">.</span>ib(default<span style="color:#ff79c6">=</span>datetime<span style="color:#ff79c6">.</span>now())
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">Post</span>(View):
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">get</span>(self, request):
+</span></span><span style="display:flex;"><span>        limit <span style="color:#ff79c6">=</span> request<span style="color:#ff79c6">.</span>query_params<span style="color:#ff79c6">.</span>get(<span style="color:#f1fa8c">&#39;limit&#39;</span>)
+</span></span><span style="display:flex;"><span>        page <span style="color:#ff79c6">=</span> request<span style="color:#ff79c6">.</span>query_params<span style="color:#ff79c6">.</span>get(<span style="color:#f1fa8c">&#39;page&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4"># initialize an instance of ListPostsUsecase</span>
+</span></span><span style="display:flex;"><span>        post_repository <span style="color:#ff79c6">=</span> DjangoPostRepositoryImpl()
+</span></span><span style="display:flex;"><span>        list_posts_usecase <span style="color:#ff79c6">=</span> ListPostsUsecase(post_repository)
+</span></span><span style="display:flex;"><span>        list_posts_usecase<span style="color:#ff79c6">.</span>with_params(page, limit)
+</span></span><span style="display:flex;"><span>        usecase_result <span style="color:#ff79c6">=</span> list_posts_usecase<span style="color:#ff79c6">.</span>execute()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        response <span style="color:#ff79c6">=</span> Serializer(usecase_result)<span style="color:#ff79c6">.</span>data
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> response
 </span></span></code></pre></div><h3 id="usecases-1">Usecases.</h3>
-<p>Lớp Usecases chứa những yêu cầu về mặt business logic của project, trong trường hợp này giả sử nếu usecase là
-hiển thị danh sách bài posts:</p>
+<p>UseCase chịu trách nhiệm xử lý business logic, UseCase gọi vào database lấy dữ liệu để phục vụ cho việc xử lý business logic.
+
+  <img src="/img/clean-architecture/usecase-database.png" alt="">
+
+</p>
+<p>Do database nằm ở External System layer nên UseCase phải giao tiếp với database thông qua 1 interface.
+
+  <img src="/img/clean-architecture/usecase-adapter.png" alt="">
+
+</p>
+<p>Trong đoạn code dưới đây, bạn thấy rằng <code>IPostRepository</code> là một interface giúp UseCase có thể giao tiếp được với database. Việc
+sử dụng một interface như thế giúp decoupling Usecase và database, kỹ thuật này được sử dụng phổ biến trong lập trình hướng đối
+tượng, và được biết đến với tên gọi là Dependency Inversion Principle.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">ListPostsUsecase</span>:
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">def</span> __init__(self, post_repository: IPostRepository):
 </span></span><span style="display:flex;"><span>        self<span style="color:#ff79c6">.</span>_post_repository <span style="color:#ff79c6">=</span> post_repository
@@ -348,8 +372,16 @@ hiển thị danh sách bài posts:</p>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">execute</span>(self):
 </span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> self<span style="color:#ff79c6">.</span>_post_repository<span style="color:#ff79c6">.</span>posts(page<span style="color:#ff79c6">=</span>self<span style="color:#ff79c6">.</span>_page, limit<span style="color:#ff79c6">=</span>self<span style="color:#ff79c6">.</span>_limit)
-</span></span></code></pre></div><p>Usecase sẽ tương tác với database thông qua một interface như <code>post_repository</code> trong đoạn code trên.</p>
+</span></span></code></pre></div><p>Usecase sẽ tương tác với database thông qua một interface như <code>post_repository</code> trong đoạn code trên. Kết quả trả ra từ những function được gọi
+qua interface này sẽ được biểu diễn bằng Entity hoặc các kiểu dữ liệu, cấu trúc dữ liệu cơ bản khác trong Python như: <code>int</code>, <code>string</code>, <code>list</code>,
+<code>dict</code>. Bây giờ, chúng ta sẽ tiếp tục xây dựng IPostRepository.</p>
 <h3 id="adapter-interface">Adapter Interface.</h3>
+<p>Chúng ta sẽ tiếp tục xây dựng <code>IPostRepository</code> và những class implement interface này. Ở đây mình implement class <code>DjangoPostRepositoryImpl</code>
+class này tận dụng ORM của Django để lấy dữ liệu trực tiếp từ database.
+
+  <img src="/img/clean-architecture/usecase-adapter-database.png" alt="">
+
+</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff79c6">import</span> abc
 </span></span><span style="display:flex;"><span><span style="color:#ff79c6">from</span> entities <span style="color:#ff79c6">import</span> PostEntity
 </span></span><span style="display:flex;"><span><span style="color:#ff79c6">from</span> ..models <span style="color:#ff79c6">import</span> Post <span style="color:#ff79c6">as</span> ORMPost
@@ -385,32 +417,33 @@ hiển thị danh sách bài posts:</p>
 </span></span><span style="display:flex;"><span>        end_item <span style="color:#ff79c6">=</span> page <span style="color:#ff79c6">*</span> limit <span style="color:#ff79c6">+</span> limit
 </span></span><span style="display:flex;"><span>        posts <span style="color:#ff79c6">=</span> ORMPost<span style="color:#ff79c6">.</span>objects<span style="color:#ff79c6">.</span>all()[start_item:end_item]
 </span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> self<span style="color:#ff79c6">.</span>_to_entities(posts)
-</span></span></code></pre></div><h3 id="external-system-1">External System.</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff79c6">from</span> internal.usecases <span style="color:#ff79c6">import</span> ListPostsUsecase
+</span></span></code></pre></div><h3 id="entities-1">Entities.</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff79c6">import</span> attr
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">from</span> datetime <span style="color:#ff79c6">import</span> datetime
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">Post</span>(View):
-</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">get</span>(self, request):
-</span></span><span style="display:flex;"><span>        limit <span style="color:#ff79c6">=</span> request<span style="color:#ff79c6">.</span>query_params<span style="color:#ff79c6">.</span>get(<span style="color:#f1fa8c">&#39;limit&#39;</span>)
-</span></span><span style="display:flex;"><span>        page <span style="color:#ff79c6">=</span> request<span style="color:#ff79c6">.</span>query_params<span style="color:#ff79c6">.</span>get(<span style="color:#f1fa8c">&#39;page&#39;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#6272a4"># initialize an instance of ListPostsUsecase</span>
-</span></span><span style="display:flex;"><span>        post_repository <span style="color:#ff79c6">=</span> DjangoPostRepositoryImpl()
-</span></span><span style="display:flex;"><span>        list_posts_usecase <span style="color:#ff79c6">=</span> ListPostsUsecase(post_repository)
-</span></span><span style="display:flex;"><span>        list_posts_usecase<span style="color:#ff79c6">.</span>with_params(page, limit)
-</span></span><span style="display:flex;"><span>        usecase_result <span style="color:#ff79c6">=</span> list_posts_usecase<span style="color:#ff79c6">.</span>execute()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        response <span style="color:#ff79c6">=</span> Serializer(usecase_result)<span style="color:#ff79c6">.</span>data
-</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> response
-</span></span></code></pre></div><p>Ở đây vai trò của Django framework chỉ là nhận HTTP request và respond HTTP response. Django không can thiệp một tí nào để Internal layer.</p>
-<h2 id="phân-tích-ưu-và-nhược-điểm-của-clean-architecture">Phân tích ưu và nhược điểm của Clean Architecture.</h2>
+</span></span><span style="display:flex;"><span>@attr.s(frozen<span style="color:#ff79c6">=</span><span style="color:#ff79c6">True</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">class</span> <span style="color:#50fa7b">PostEntity</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">id</span>: <span style="color:#8be9fd;font-style:italic">int</span> <span style="color:#ff79c6">=</span> attr<span style="color:#ff79c6">.</span>ib()
+</span></span><span style="display:flex;"><span>    title: <span style="color:#8be9fd;font-style:italic">str</span> <span style="color:#ff79c6">=</span> attr<span style="color:#ff79c6">.</span>ib()
+</span></span><span style="display:flex;"><span>    content: <span style="color:#8be9fd;font-style:italic">str</span> <span style="color:#ff79c6">=</span> attr<span style="color:#ff79c6">.</span>ib()
+</span></span><span style="display:flex;"><span>    created_at: datetime <span style="color:#ff79c6">=</span> attr<span style="color:#ff79c6">.</span>ib(default<span style="color:#ff79c6">=</span>datetime<span style="color:#ff79c6">.</span>now())
+</span></span><span style="display:flex;"><span>    update_at: datetime <span style="color:#ff79c6">=</span> attr<span style="color:#ff79c6">.</span>ib(default<span style="color:#ff79c6">=</span>datetime<span style="color:#ff79c6">.</span>now())
+</span></span></code></pre></div><h2 id="phân-tích-ưu-và-nhược-điểm-của-clean-architecture">Phân tích ưu và nhược điểm của Clean Architecture.</h2>
 <h3 id="ưu-điểm">Ưu điểm.</h3>
 <ul>
-<li>Nếu để ý thì ta sẽ thấy Clean Architecture sử dụng 5 nguyên tắc SOLID để thiết kế một mã nguồn giúp ta dễ dàng chỉnh sửa, mở rộng tính năng.
+<li>
+<p>Nếu để ý thì ta sẽ thấy Clean Architecture sử dụng 5 nguyên tắc SOLID để thiết kế một mã nguồn giúp ta dễ dàng chỉnh sửa, mở rộng tính năng.
 ví dụ: usecase giao tiếp với database thông qua interface chính là áp dụng nguyên tắc thứ 5 - Dependency Inverson Priciple. Mà việc sử dung
-Dependency Inversion cũng đã giúp code của bạn thoả mãn các quy tắc khác của SOLID.</li>
-<li>Sau khi project đã trải qua thời gian ban đầu và bước vào quá trình ổn định, việc có được một thiết kế tốt sẽ giúp chúng ta giảm được rất nhiều
-chi phí khi cần chỉnh sửa tính năng cũ cũng như thêm vào những tính năng mới.</li>
+Dependency Inversion cũng đã giúp code của bạn thoả mãn các quy tắc khác của SOLID.</p>
+</li>
+<li>
+<p>Sau khi project đã trải qua thời gian ban đầu và bước vào quá trình ổn định, việc có được một thiết kế tốt sẽ giúp chúng ta giảm được rất nhiều
+chi phí khi cần chỉnh sửa tính năng cũ cũng như thêm vào những tính năng mới.</p>
+</li>
+<li>
+<p>Clean Architecture giúp bạn cực kỳ thuận lợi để follow Test Driven Development. Bạn dễ dàng test từng layer một mà chưa cần phải implement những layer còn lại.</p>
+</li>
 </ul>
 <h3 id="nhược-điểm">Nhược điểm.</h3>
 <ul>
@@ -425,7 +458,7 @@ thì hãy tham khảo thêm những nguồn tài liều mà mình trích dẫn �
 <h2 id="tài-liệu-tham-khảo">Tài liệu tham khảo.</h2>
 <ul>
 <li><a href="https://www.amazon.com/Clean-Architecture-Craftsmans-Software-Structure/dp/0134494164">https://www.amazon.com/Clean-Architecture-Craftsmans-Software-Structure/dp/0134494164</a></li>
-<li></li>
+<li><a href="https://www.youtube.com/watch?v=C7MRkqP5NRI&amp;pp=ygUZZGphbmdvIGNsZWFuIGFyY2hpdGVjdHVyZQ%3D%3D">https://www.youtube.com/watch?v=C7MRkqP5NRI&amp;pp=ygUZZGphbmdvIGNsZWFuIGFyY2hpdGVjdHVyZQ%3D%3D</a></li>
 </ul>
 
 
