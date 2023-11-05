@@ -6,7 +6,27 @@
     <description>Recent content on breadcrumbscollector</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 07 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://nhatthanh020996.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 20 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://nhatthanh020996.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title></title>
+      <link>https://nhatthanh020996.github.io/what-the-benefit-studying-university-bring-to-me/</link>
+      <pubDate>Fri, 20 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://nhatthanh020996.github.io/what-the-benefit-studying-university-bring-to-me/</guid>
+      <description>Mình cũng từng học đại học, chuyên ngành Khoa học máy tính ở Đại học Bách Khoa Hà Nội. Những năm đi học cho đến khi ra trường, trong khoảng 1-2 năm, mình luôn băn khoăn về việc liệu có đáng để bỏ 5 năm cùng với hàng trăm triệu tiền học để theo đuổi con đường học tại trường đại học hay không. Trong khi đó, có nhiều bạn học tại các trung tâm chỉ cần 6 tháng là có thể bắt đầu làm việc hoặc cũng có các khóa học trên Udemy giúp mình nắm kiến thức trong thời gian ngắn.</description>
+    </item>
+    
+    <item>
+      <title>Git rebase và git merge</title>
+      <link>https://nhatthanh020996.github.io/git-merge-and-git-rebase/</link>
+      <pubDate>Thu, 12 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://nhatthanh020996.github.io/git-merge-and-git-rebase/</guid>
+      <description>Git merge thực sự là gì? Giả sử chúng ta đang ở branch A và muốn merge branch B vào branch A với câu lệnh:
+git merge B Sẽ có 2 trường hợp xuất hiện:
+B đang trỏ vào commit là commit cha của commit mà A đang trỏ vào. Ở đây Git sẽ tuân thủ fast forward strategy để merge B vào A. Kết quả sẽ xấy ra như ví dụ dưới đây: # A: C1 -&amp;gt; C2 -&amp;gt; C3 # B: C1 -&amp;gt; C2 -&amp;gt; C3 -&amp;gt; C4 -&amp;gt; C5 git merge B # result # A: C1 -&amp;gt; C2 -&amp;gt; C3 -&amp;gt; C4 -&amp;gt; C5 # B: C1 -&amp;gt; C2 -&amp;gt; C3 -&amp;gt; C4 -&amp;gt; C5 B đang trỏ vào commit không phải là cha của commit mà A đang trỏ vào.</description>
+    </item>
+    
     <item>
       <title>Git Internal</title>
       <link>https://nhatthanh020996.github.io/git-internal/</link>
@@ -74,32 +94,12 @@ Phantom reads: if you run a query twice, the second query could see different ro
     </item>
     
     <item>
-      <title>Git rebase và git merge</title>
-      <link>https://nhatthanh020996.github.io/git-merge-and-git-rebase/</link>
-      <pubDate>Mon, 12 Jun 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://nhatthanh020996.github.io/git-merge-and-git-rebase/</guid>
-      <description>Git merge thực sự là gì? Giả sử chúng ta đang ở branch A và muốn merge branch B vào branch A với câu lệnh:
-git merge B Sẽ có 2 trường hợp xuất hiện:
-B đang trỏ vào commit là commit cha của commit mà A đang trỏ vào. Ở đây Git sẽ tuân thủ fast forward strategy để merge B vào A. Kết quả sẽ xấy ra như ví dụ dưới đây: # A: C1 -&amp;gt; C2 -&amp;gt; C3 # B: C1 -&amp;gt; C2 -&amp;gt; C3 -&amp;gt; C4 -&amp;gt; C5 git merge B # result # A: C1 -&amp;gt; C2 -&amp;gt; C3 -&amp;gt; C4 -&amp;gt; C5 # B: C1 -&amp;gt; C2 -&amp;gt; C3 -&amp;gt; C4 -&amp;gt; C5 B đang trỏ vào commit không phải là cha của commit mà A đang trỏ vào.</description>
-    </item>
-    
-    <item>
       <title>How database read records from disk</title>
       <link>https://nhatthanh020996.github.io/how-database-read-records-from-disk/</link>
       <pubDate>Mon, 12 Jun 2023 00:00:00 +0000</pubDate>
       
       <guid>https://nhatthanh020996.github.io/how-database-read-records-from-disk/</guid>
       <description>Dadabase disk page </description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://nhatthanh020996.github.io/what-the-benefit-studying-university-bring-to-me/</link>
-      <pubDate>Sun, 11 Jun 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://nhatthanh020996.github.io/what-the-benefit-studying-university-bring-to-me/</guid>
-      <description>Mình cũng từng học đại học, chuyên ngành Khoa học máy tính ở Đại học Bách Khoa Hà Nội. Những năm đi học cho đến khi ra trường, trong khoảng 1-2 năm, mình luôn băn khoăn về việc liệu có đáng để bỏ 5 năm cùng với hàng trăm triệu tiền học để theo đuổi con đường học tại trường đại học hay không. Trong khi đó, có nhiều bạn học tại các trung tâm chỉ cần 6 tháng là có thể bắt đầu làm việc hoặc cũng có các khóa học trên Udemy giúp mình nắm kiến thức trong thời gian ngắn.</description>
     </item>
     
     <item>

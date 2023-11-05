@@ -6,7 +6,18 @@
     <description>Recent content in Git on breadcrumbscollector</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 07 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://nhatthanh020996.github.io/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 12 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://nhatthanh020996.github.io/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Git rebase và git merge</title>
+      <link>https://nhatthanh020996.github.io/git-merge-and-git-rebase/</link>
+      <pubDate>Thu, 12 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://nhatthanh020996.github.io/git-merge-and-git-rebase/</guid>
+      <description>Git merge thực sự là gì? Giả sử chúng ta đang ở branch A và muốn merge branch B vào branch A với câu lệnh:
+git merge B Sẽ có 2 trường hợp xuất hiện:
+B đang trỏ vào commit là commit cha của commit mà A đang trỏ vào. Ở đây Git sẽ tuân thủ fast forward strategy để merge B vào A. Kết quả sẽ xấy ra như ví dụ dưới đây: # A: C1 -&amp;gt; C2 -&amp;gt; C3 # B: C1 -&amp;gt; C2 -&amp;gt; C3 -&amp;gt; C4 -&amp;gt; C5 git merge B # result # A: C1 -&amp;gt; C2 -&amp;gt; C3 -&amp;gt; C4 -&amp;gt; C5 # B: C1 -&amp;gt; C2 -&amp;gt; C3 -&amp;gt; C4 -&amp;gt; C5 B đang trỏ vào commit không phải là cha của commit mà A đang trỏ vào.</description>
+    </item>
+    
     <item>
       <title>Git Internal</title>
       <link>https://nhatthanh020996.github.io/git-internal/</link>
@@ -14,17 +25,6 @@
       
       <guid>https://nhatthanh020996.github.io/git-internal/</guid>
       <description>Mở đầu. Chắc là chúng ta sẽ không mất nhiều thời gian để nói về Git nữa vì chúng quá phổ biến và gần gũi đúng không nào. Mình chỉ chia sẻ một chi tiết khá thú vị về nguồn gốc ra đời Git, Git được sáng tạo ra bởi Linus Torvalds - một cái tên quá nổi tiếng trong thế giới phần mềm rồi đúng không. Theo như những gì chia sẻ trong một cuộc phỏng vấn ở Ted Talk của tác giả, Git được ra đời vì Torvalds muốn tạo ra một công cụ nào đó giúp ông quản lý source code của Linux được hiệu quả hơn.</description>
-    </item>
-    
-    <item>
-      <title>Git rebase và git merge</title>
-      <link>https://nhatthanh020996.github.io/git-merge-and-git-rebase/</link>
-      <pubDate>Mon, 12 Jun 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://nhatthanh020996.github.io/git-merge-and-git-rebase/</guid>
-      <description>Git merge thực sự là gì? Giả sử chúng ta đang ở branch A và muốn merge branch B vào branch A với câu lệnh:
-git merge B Sẽ có 2 trường hợp xuất hiện:
-B đang trỏ vào commit là commit cha của commit mà A đang trỏ vào. Ở đây Git sẽ tuân thủ fast forward strategy để merge B vào A. Kết quả sẽ xấy ra như ví dụ dưới đây: # A: C1 -&amp;gt; C2 -&amp;gt; C3 # B: C1 -&amp;gt; C2 -&amp;gt; C3 -&amp;gt; C4 -&amp;gt; C5 git merge B # result # A: C1 -&amp;gt; C2 -&amp;gt; C3 -&amp;gt; C4 -&amp;gt; C5 # B: C1 -&amp;gt; C2 -&amp;gt; C3 -&amp;gt; C4 -&amp;gt; C5 B đang trỏ vào commit không phải là cha của commit mà A đang trỏ vào.</description>
     </item>
     
   </channel>
