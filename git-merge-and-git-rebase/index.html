@@ -232,12 +232,67 @@
 </span></span><span style="display:flex;"><span><span style="color:#6272a4"># result</span>
 </span></span><span style="display:flex;"><span><span style="color:#6272a4"># A: C1 -&gt; C2 -&gt; C3 ------&gt; C35</span>
 </span></span><span style="display:flex;"><span>            | -&gt; C5 --/
+</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#6272a4"># B: C1 -&gt; C2 -&gt; C3 -&gt; C4 -&gt; C5</span>
 </span></span></code></pre></div>bạn sẽ sinh thêm một commit mới C35, và khi nhìn vào cây commit chúng ta sẽ không hiểu commit này đang nói lên điều gì, và đây chính là nguyên nhân gây nên commit history không được clean. Trong những trường hợp này để tránh xuất hiện commit C35, <code>rebase</code> sẽ là một cách hiệu quả, cụ thể thế nào mình sẽ nói rõ ở phần sau của bài viết.</li>
 </ul>
 <h2 id="remote-tracking-branch-là-gì">Remote Tracking Branch là gì?</h2>
-<h2 id="git-rebase-là-gì-lúc-nào-dùng-rebase-thay-cho-merge">Git Rebase là gì? Lúc nào dùng Rebase thay cho Merge.</h2>
+<p>Cho đến phần này của bài viết, mọi thứ mình đang làm trên repository để được thực hiện local, mọi thay đổi chỉ diễn ra trên máy tính cá nhân của mình. Tất nhiên Git không sinh ra chỉ để quản lý version của source code - cái chỉ mỗi mình contribute vào. Git được sinh ra để quan lý version của mã nguồn - được contribute bởi nhiều thành viên khác nhau. Để thấy được những thay đổi tạo ra bởi những thành viên khác nhau trong team, các thành viên sau khi tạo commit ở <code>local repository</code> phải đưa những thay đổi đó lên server (thông qua câu lệnh <code>git push</code> như hầu hết chúng ta đã quen thuộc). Repository ở server sẽ được gọi là <code>remote repository</code>.</p>
+<p>Ở <code>local reposity</code>, chúng ta có chứa references của <code>remote repository</code>, những references này sẽ cập nhật state của <code>remote repository</code> thông qua câu lệnh <code>git fetch</code>, những references này chính là cái mà chúng ta gọi là <code>Remote Tracking Branch</code>. Ở trong thư mục <code>.git</code> vị trí của những <code>remote tracking branhes</code> này sẽ được nhìn thấy ở thư mục .git/refs/remotes như ví dụ dưới đây:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>tree .git/refs/
+</span></span><span style="display:flex;"><span>├── remotes
+</span></span><span style="display:flex;"><span>│   └── origin
+</span></span><span style="display:flex;"><span>│       ├── HEAD
+</span></span><span style="display:flex;"><span>│       ├── staging
+</span></span><span style="display:flex;"><span>│       ├── master
+</span></span><span style="display:flex;"><span>│       ├── develop
+</span></span><span style="display:flex;"><span>│       ├── hotfix
+</span></span><span style="display:flex;"><span>│       │   ├── allow_testing_emails_blank
+</span></span><span style="display:flex;"><span>│       │   ├── disble_verifying_ssl_billing_event
+</span></span><span style="display:flex;"><span>│       │   ├── partner_api
+</span></span><span style="display:flex;"><span>│       │   └── set_conn_max_age
+</span></span></code></pre></div><h2 id="git-rebase-là-gì-lúc-nào-dùng-rebase-thay-cho-merge">Git Rebase là gì? Lúc nào dùng Rebase thay cho Merge.</h2>
+<p>Ở phần đầu tiên của bài viết, khi nói về <code>git merge</code> mình có nói đến việc khi <code>git merge</code> không tuân thủ <code>fast forward stradegy</code> nó sẽ tạo ra thêm những commit thừa, đồng thời làm cho lịch sử commit không còn tuyến tính nữa. Để giải quyết vấn đề này ta có thể sử dụng đến <code>git rebase</code>, mình xin được nhắc lại bài toán ở phần trước như sau:</p>
+<ul>
+<li>
+<p>ở thời điểm t1, bạn fetch code từ nhánh develop của server về local, lúc này state của develop đang là:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6272a4"># develop</span>
+</span></span><span style="display:flex;"><span>C1 -&gt; C2
+</span></span></code></pre></div></li>
+<li>
+<p>Bạn tạo ra một nhánh mới là feature1 ở local của bạn từ develop với câu lệnh <code>git branch feature1:origin/develop</code>, lúc này state của nhánh feature1 sẽ giống với develop:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6272a4"># feature1</span>
+</span></span><span style="display:flex;"><span>C1 -&gt; C2
+</span></span></code></pre></div></li>
+<li>
+<p>Ở thời điểm t2, đồng nghiệp A của bạn cũng fetch code từ develop, và tạo branch feature2 trên máy của A. A tạo thêm 2 commit C3, C4 và push lên develop, lúc này state của develop sẽ như sau:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6272a4"># develop</span>
+</span></span><span style="display:flex;"><span>C1 -&gt; C2 -&gt; C3 -&gt; C4
+</span></span></code></pre></div></li>
+<li>
+<p>Ở nhánh feature1 ở local của mình, mình cũng tạo thêm commit C5:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6272a4"># feature1</span>
+</span></span><span style="display:flex;"><span>C1 -&gt; C2 -&gt; C5
+</span></span></code></pre></div></li>
+<li>
+<p>Lúc này mình muốn đẩy code lên branch develop của server, mình sử dụng câu lệnh:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git push origin feature1:develop
+</span></span></code></pre></div><p>Đáng tiếc là khả năng cao Git sẽ không cho phép bạn push code và raise lên lỗi <code>Git push non-fast-forward updates were rejected</code>, vì commit C5 mà feature1 đang trỏ vào không phải là cha của commit C4 mà develop server đang trỏ vào.</p>
+</li>
+<li>
+<p>Lúc này mình sẽ sử dụng <code>git rebase</code> để giải quyết vấn đề, đầu tiên mình sẽ fetch remote develop branch về local của mình, origin/develop branch trên local của mình sẽ được cập nhập trạng thái mới nhất của remote develop branch.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git fetch origin develop
+</span></span></code></pre></div><p>Sử dụng <code>git rebase</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git rebase origin/develop
+</span></span></code></pre></div><p>Lúc này trạng mới của feature branch sẽ như sau:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>C1 -&gt; C2 -&gt; C3 -&gt; C4 -&gt; C5&#39;
+</span></span></code></pre></div><p>Commit C5&rsquo; được tạo ra và C5 đã biến mất, C5&rsquo; sẽ mang theo mọi thay đổi từ C5, nhưng sẽ là cha của C4, điều đó cho phép ta có thể update code từ feature1 lên <code>remote develop branch</code> mà không làm mât đi tính tuyến tính của commit history.</p>
+</li>
+</ul>
+<p>Thông qua ví dụ trên, chúng ta cũng đã phần nào trả lời được câu hỏi: Lúc nào thì nên dùng rebase để thay thế cho merge. Thực tế thì rebase là một công cụ mạnh mẽ, cho phép chúng ta giải quyết được rất nhiều vấn đề, giúp ta tạo ra được một lịch sử commit rõ ràng và mạch lạc. Trong khuôn khổ bài viết này mình xin không đề cập thêm những ứng dụng của rebase nữa, vì nó quá dài để kể.</p>
 <h2 id="kết-bài">Kết bài.</h2>
+<p>Thông qua 2 bài viết về Git Internal, mình đã đưa ra đến nhiều khái niệm quan trọng trong Git như: BLOB, tree, commit, giải thích git push, git rebase, remote tracking branch. Việc hiểu những khái niệm này là cần thiết đối với một software engineer - những người phải làm việc gới Git thường xuyên, nó sẽ mang lại sự tự tin lớn cho bạn khi làm việc với Git hơn rất nhiều.</p>
+<p>Cảm ơn các bạn đã theo dõi bài viết, chắc chắn sẽ không thể tránh khỏi những thiếu sót, mình rất mong nhận được sự đóng góp của bạn đọc, và sẵn sàng sửa chữa.</p>
 <h2 id="tài-liệu-tham-khảo">Tài liệu tham khảo</h2>
 <ul>
 <li><a href="https://git-scm.com/docs/git-merge">https://git-scm.com/docs/git-merge</a></li>
@@ -329,6 +384,8 @@
                         
                         
                         
+                        
+                        
                         <a href="/tags/git" title="git">
                             git
                         </a>
@@ -353,15 +410,7 @@
                         
                         
                         
-                        <a href="/tags/socket" title="socket">
-                            socket
-                        </a>
                         
-                        
-                        
-                        <a href="/tags/tcp/ip" title="tcp/ip">
-                            tcp/ip
-                        </a>
                         
                         
                     </div>
