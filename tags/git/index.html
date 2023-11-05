@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="Pooling" />
-    <meta property="og:title" content="Pooling" />
-    <meta property="twitter:title" content="Pooling" />
+    <meta name="title" content="Git" />
+    <meta property="og:title" content="Git" />
+    <meta property="twitter:title" content="Git" />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="networing, operating system, computer architecture, python, socket programing, database">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Pooling | breadcrumbscollector</title>
+    <title>Git | breadcrumbscollector</title>
 
-    <link rel="canonical" href="/tags/pooling/">
+    <link rel="canonical" href="/tags/git/">
 
     
     
@@ -187,20 +187,20 @@
 <div data-pagefind-ignore="all">
 
 <div class="post-preview">
-    <a href="https://nhatthanh020996.github.io/pgbouncer/">
+    <a href="https://nhatthanh020996.github.io/git-internal/">
         <h2 class="post-title">
-            Pgbouncer
+            Git Internal
         </h2>
 	
         <div class="post-content-preview">
 	
-            Discover the power and benefits of using pgbouncer as a connection pooling tool for PostgreSQL databases.
+            Git là một trong những công cụ quen thuộc nhất đối với bất kì một developer nào, chúng ta làm việc với nó gần như mỗi ngày, nhưng có một sự thật là có rất nhiều lập trình viên vẫn chưa đủ tự tin khi làm việc với Git. Trong bài viết này, mình xin chia sẻ những gì xẩy ra phía sau những câu lệnh Git của chúng ta, tất nhiên ở một độ sâu nào đó (không đến mức phải đọc từng dòng code C, vì mình chưa đủ năng lực để làm việc đó). Từ đây hi vọng chúng ta có thể hiểu đươc phần nào đó về cách Git hoạt động, cũng như tự tin hơn khi sử dụng nó.
         
         </div>
     </a>
     <p class="post-meta">
     
-        Posted by Admin on Tuesday, June 13, 2023
+        Posted by Admin on Saturday, October 7, 2023
         
         
     
@@ -210,15 +210,17 @@
 <hr>
 
 <div class="post-preview">
-    <a href="https://nhatthanh020996.github.io/how-database-read-records-from-disk/">
+    <a href="https://nhatthanh020996.github.io/git-internal/">
         <h2 class="post-title">
-            How database read records from disk
+            Git rebase và git merge
         </h2>
 	
         <div class="post-content-preview">
 	
-            Explore the process of reading records from disk in a database, unraveling the inner workings of data retrieval.
-        
+            Git merge thực sự là gì? Giả sử chúng ta đang ở branch A và muốn merge branch B vào branch A với câu lệnh:
+git merge B Sẽ có 2 trường hợp xuất hiện:
+B đang trỏ vào commit là commit cha của commit mà A đang trỏ vào. Ở đây Git sẽ tuân thủ fast forward strategy để merge B vào A. Kết quả sẽ xấy ra như ví dụ dưới đây: # A: C1 -&gt; C2 -&gt; C3 # B: C1 -&gt; C2 -&gt; C3 -&gt; C4 -&gt; C5 git merge B # result # A: C1 -&gt; C2 -&gt; C3 -&gt; C4 -&gt; C5 # B: C1 -&gt; C2 -&gt; C3 -&gt; C4 -&gt; C5 B đang trỏ vào commit không phải là cha của commit mà A đang trỏ vào.
+       
         </div>
     </a>
     <p class="post-meta">
