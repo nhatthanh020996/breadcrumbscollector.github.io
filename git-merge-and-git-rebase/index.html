@@ -15,15 +15,15 @@
     
 
     
-    <meta name="title" content="How database read records from disk" />
-    <meta property="og:title" content="How database read records from disk" />
-    <meta property="twitter:title" content="How database read records from disk" />
+    <meta name="title" content="Git rebase và git merge" />
+    <meta property="og:title" content="Git rebase và git merge" />
+    <meta property="twitter:title" content="Git rebase và git merge" />
     
 
     
-    <meta name="description" content="Explore the process of reading records from disk in a database, unraveling the inner workings of data retrieval.">
-    <meta property="og:description" content="Explore the process of reading records from disk in a database, unraveling the inner workings of data retrieval." />
-    <meta property="twitter:description" content="Explore the process of reading records from disk in a database, unraveling the inner workings of data retrieval." />
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="networing, operating system, computer architecture, python, socket programing, database">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>How database read records from disk | breadcrumbscollector</title>
+    <title>Git rebase và git merge | breadcrumbscollector</title>
 
-    <link rel="canonical" href="/how-database-read-records-from-disk/">
+    <link rel="canonical" href="/git-merge-and-git-rebase/">
 
     
     
@@ -170,20 +170,12 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/database" title="Database">
-                            Database
-                        </a>
-                        
-                        <a class="tag" href="/tags/postgresql" title="PostgreSQL">
-                            PostgreSQL
-                        </a>
-                        
-                        <a class="tag" href="/tags/pooling" title="Pooling">
-                            Pooling
+                        <a class="tag" href="/tags/git" title="Git">
+                            Git
                         </a>
                         
                     </div>
-                    <h1>How database read records from disk</h1>
+                    <h1>Git rebase và git merge</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         
@@ -218,7 +210,39 @@
                 post-container">
 
                 
-                <h1 id="dadabase-disk-page">Dadabase disk page</h1>
+                <h2 id="git-merge-thực-sự-là-gì">Git merge thực sự là gì?</h2>
+<p>Giả sử chúng ta đang ở branch A và muốn merge branch B vào branch A với câu lệnh:</p>
+<pre tabindex="0"><code>git merge B
+</code></pre><p>Sẽ có 2 trường hợp xuất hiện:</p>
+<ul>
+<li>B đang trỏ vào commit là commit cha của commit mà A đang trỏ vào. Ở đây Git sẽ tuân thủ <code>fast forward strategy</code> để merge B vào A. Kết quả sẽ xấy ra như ví dụ dưới đây:
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6272a4"># A: C1 -&gt; C2 -&gt; C3</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># B: C1 -&gt; C2 -&gt; C3 -&gt; C4 -&gt; C5</span>
+</span></span><span style="display:flex;"><span>git merge B
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># result</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># A: C1 -&gt; C2 -&gt; C3 -&gt; C4 -&gt; C5</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># B: C1 -&gt; C2 -&gt; C3 -&gt; C4 -&gt; C5</span>
+</span></span></code></pre></div></li>
+<li>B đang trỏ vào commit <code>không</code> phải là cha của commit mà A đang trỏ vào. Ở đây Git sẽ thường tuân thủ <code>Recursive strategy</code> để merge từ B vào A. Kết quả sẽ xấy ra như ví dụ dưới đây:
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6272a4"># A: C1 -&gt; C2 -&gt; C3</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># B: C1 -&gt; C2 -&gt; C4 -&gt; C5</span>
+</span></span><span style="display:flex;"><span>git merge B
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># result</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># A: C1 -&gt; C2 -&gt; C3 ------&gt; C35</span>
+</span></span><span style="display:flex;"><span>            | -&gt; C5 --/
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># B: C1 -&gt; C2 -&gt; C3 -&gt; C4 -&gt; C5</span>
+</span></span></code></pre></div>bạn sẽ sinh thêm một commit mới C35, và khi nhìn vào cây commit chúng ta sẽ không hiểu commit này đang nói lên điều gì, và đây chính là nguyên nhân gây nên commit history không được clean. Trong những trường hợp này để tránh xuất hiện commit C35, <code>rebase</code> sẽ là một cách hiệu quả, cụ thể thế nào mình sẽ nói rõ ở phần sau của bài viết.</li>
+</ul>
+<h2 id="remote-tracking-branch-là-gì">Remote Tracking Branch là gì?</h2>
+<h2 id="git-rebase-là-gì-lúc-nào-dùng-rebase-thay-cho-merge">Git Rebase là gì? Lúc nào dùng Rebase thay cho Merge.</h2>
+<h2 id="kết-bài">Kết bài.</h2>
+<h2 id="tài-liệu-tham-khảo">Tài liệu tham khảo</h2>
+<ul>
+<li><a href="https://git-scm.com/docs/git-merge">https://git-scm.com/docs/git-merge</a></li>
+<li><a href="https://git-scm.com/docs/git-rebase">https://git-scm.com/docs/git-rebase</a></li>
+</ul>
 
 
                 
@@ -228,13 +252,13 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/socket-programming/" data-toggle="tooltip" data-placement="top" title="">&larr;
+                        <a href="/how-database-read-records-from-disk/" data-toggle="tooltip" data-placement="top" title="How database read records from disk">&larr;
                             Previous Post</a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/git-merge-and-git-rebase/" data-toggle="tooltip" data-placement="top" title="Git rebase và git merge">Next
+                        <a href="/pgbouncer/" data-toggle="tooltip" data-placement="top" title="Pgbouncer">Next
                             Post &rarr;</a>
                     </li>
                     
