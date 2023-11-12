@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="breadcrumbscollector">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="/img/posts/isolation/title_image.jpeg">
+    <meta property="twitter:image" content="/img/posts/isolation/title_image.jpeg" />
+    
+
+    
+    <meta name="title" content="Tổng quan về hệ điều hành - Process" />
+    <meta property="og:title" content="Tổng quan về hệ điều hành - Process" />
+    <meta property="twitter:title" content="Tổng quan về hệ điều hành - Process" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="networing, operating system, computer architecture, python, socket programing, database">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Tổng quan về hệ điều hành - Process | breadcrumbscollector</title>
+
+    <link rel="canonical" href="/what-is-process/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">breadcrumbscollector</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/archive//">ARCHIVE</a></li>
+                    
+                        <li><a href="/notes//">NOTES</a></li>
+                    
+                        <li><a href="/about/index//">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/posts/isolation/title_image.jpeg')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/operating-system" title="Operating system">
+                            Operating system
+                        </a>
+                        
+                    </div>
+                    <h1>Tổng quan về hệ điều hành - Process</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                Admin
+                             
+                            on 
+                            Monday, October 23, 2023
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <h2 id="1-process-concept">1. Process concept.</h2>
+<h3 id="11-the-process">1.1. The Process</h3>
+<p>Một chương trình đang được thực thi bởi máy tính gọi là Process, ví dụ:
+Bạn có một chương trình helloworld được viết bằng C trong file helloworld.c như sau:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#ff79c6">#include</span> <span style="color:#ff79c6">&lt;stdio.h&gt;</span><span style="color:#ff79c6">
+</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd">int</span> <span style="color:#50fa7b">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#50fa7b">printf</span>(<span style="color:#f1fa8c">&#34;Hello, World!</span><span style="color:#f1fa8c">\n</span><span style="color:#f1fa8c">&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> <span style="color:#bd93f9">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Bạn tiến hành biên dịch chương trình trên bằng câu lệnh sau trên terminal:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gcc helloworld.c -o helloworld
+</span></span></code></pre></div><p>Bạn tiếp tục chạy câu lệnh sau trên terminal:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./helloworld
+</span></span></code></pre></div><p>Lúc này một process đã được khởi tạo.</p>
+<p>Mình muốn nhấn mạnh rằng một program bản thân nó không phải là một process. Một program là một <code>passive entity</code>, ví dụ: là một file chứa nhiều câu lệnh và được lưu ở trong disk, ta gọi nó là executable file, trong ví dụ trên là <code>helloworld</code>. Ngược lại, process là một <code>active entity</code>, và một program trở thành một process khi <code>executable file</code> được load vào trong memory. Memory representation của một process sẽ bao gồm những thành phần sau:</p>
+<ol>
+<li><strong>Text segment</strong>: chứa instructions của của process, khi process được thực thi bởi CPU, những instruction này sẽ được fetched vào CPU để thực thi.</li>
+<li><strong>data</strong>: chứa những hằng số được sử dụng ở trong chương trình của bạn. Ví dụ: ở chương trình helloworld ở trên, thì data segment sẽ phải có một vùng nhớ để chứa &ldquo;Hello, World!\n&rdquo;, khi CPU tiến hành fetch instructions ở text segment để thực thi, CPU sẽ tiến hành load &ldquo;Hello, World!\n&rdquo; từ vùng vùng nhớ - nơi chứa string này ở memory vào thanh ghi CPU. CPU sau đó sẽ thực hiện instruction in đoạn text này ra I/O device - trong trường hợp ở ví dụ trên là monitor.</li>
+<li><strong>Heap</strong>: là vùng nhớ dùng để chứa những biến được cấp phát động trong quá trình chương trình được thực thi.</li>
+<li><strong>Stack</strong>: Trong quá trình thực thi chương trình, khi xuât hiện lời gọi hàm, sẽ tạo ra một stack frame ở trong vùng nhớ stack, vùng nhớ này sẽ có thể ghi lại tham số truyền vào của hàm, địa chỉ trả về - là địa chỉ của instruction tiếp theo sau khi lời gọi hàm kết thúc, biến local được sử dụng trong hàm.</li>
+</ol>
+<p>Trong khuôn khổ bài viết này mình sẽ không viết quá chi tiết về một memory representation của một process? tất cả điều này mình sẽ viết ra trong một bài viết khác.</p>
+<h3 id="12-process-state">1.2. Process State.</h3>
+<p>Sau khi một process được tạo ra, nó sẽ phải trải qua những trạng thái (state) như sau:</p>
+<ul>
+<li><strong>New</strong>: Là trạng thái lúc process mới được khởi tạo, trước khi được hệ điều hành allocate tài nguyên memory cho nó.</li>
+<li><strong>Ready</strong>: Lúc này process đã được OS cung cấp đủ tài nguyên memory, sẵn sàng để được OS allocate CPU và execute. Lúc này process sẽ được xếp vào <code>ready queue</code>, gồm nhiều process khác, tất cả đều chờ để được CPU thực thi.</li>
+<li><strong>Running</strong>: Ở trạng thái này process được CPU fetches instructions trong text segment của nó ở memory, thực thi các instructions này.</li>
+<li><strong>Waiting</strong>: Trong quá trình thực thi, sẽ có những lúc process chờ những event khác để được thực thi tiếp, ví dụ: chờ input được nhập vào từ bàn phím, chờ data được lấy từ internet device, &hellip; Trong lúc chờ event, process sẽ move khỏi <code>ready queue</code> và add vào <code>waiting queue</code>, CPU lúc này sẽ tiến hành thực thi những processes khác ở ready queue. Sau khi có kết quả từ event, processes sẽ bị remove ra khỏi <code>waiting queue</code> và được add trở lại vào <code>ready queue</code> để tiếp tục chờ CPU xử lý.</li>
+<li><strong>Terminated</strong>: Process kết thúc chu trình fetches instruction -&gt; execute instruction.</li>
+</ul>
+<p>
+  <img src="/img/what-is-process/states.png" alt="">
+
+</p>
+<h3 id="13-process-control-block">1.3 Process Control Block.</h3>
+<p>Ở trong phần 1.2 ở trên, mình có nhắc đến những queue như <code>ready queue</code> hay <code>waiting queue</code>, mỗi phần tử trong những queue này chính là representation của một process, vậy representation này là gì?</p>
+<p><code>ready queue</code> sẽ chứa con trỏ chứa địa chỉ của những <code>process control block</code> gọi tắt là <code>PCB</code> (có một số hệ điều hành sẽ gọi là <code>task control block</code>). Một PCB là representation của một process, chúng sẽ chứa những thông tin chính sau:</p>
+<ul>
+<li>
+<p><strong>Process state</strong>: là trạng thái hiện tại của process, một trong những trạng thái đã được nhắc đến ở phần 1.2.</p>
+</li>
+<li>
+<p><strong>Program counter</strong>: Là địa chỉ của instruction tiếp theo sẽ được thực hiện bởi CPU. Các bạn có thể xem lại bài viết về kiến trúc máy tính để biết thêm về thanh ghi PC.</p>
+</li>
+<li>
+<p><strong>CPU registers</strong>: Khi có một interupt xuất hiện (ví dụ: process phải chờ một event nào đó từ I/O device để tiếp tục thực hiện), trạng thái của các registers sẽ được lưu lại ở trong PCB. Khi CPU thực hiện process trở lại, nó sẽ tiến hành load những giá trị này từ PCB vào CPU để tiếp tục thực thi proceess.</p>
+</li>
+<li>
+<p><strong>CPU-scheduling information</strong>: mức độ ưu tiên của process, sẽ được nói rõ hơn ở phần sau.</p>
+</li>
+<li>
+<p><strong>Memory-management information</strong>: Chứa các thông tin chính như sau:</p>
+<ul>
+<li><code>base register</code> và <code>limit register</code>: thanh ghi cơ sở và giới hạn của memory representation of process, 2 thanh ghi này giúp ngăn các processes access vào vùng nhớ lẫn nhau.</li>
+<li><code>page tables</code>: Memory của một process sẽ được OS chia thành các page (mỗi page gồm nhiều bytes, và có kích một page sẽ là luỹ thừa của 2), thanh ghi PC chỉ chứa <code>logical address</code> của process, nên CPU sẽ phải tìm cách đổi địa chỉ này qua <code>physical address</code> để có thể access vào memory và fetch instruction. Quá trình đổi địa chỉ này sẽ cần sử dụng <code>page tables</code>, chi tiết hơn về quá trình này sẽ được mình giải thích trong những phần sau về memory management của OS.</li>
+</ul>
+</li>
+</ul>
+<p>
+  <img src="/img/what-is-process/PCB.png" alt="">
+
+</p>
+<h3 id="14-threads">1.4. Threads.</h3>
+<p>Khái niệm process được mình sử dụng cho đến lúc này của bài viết là những process với một thread duy nhất trong đó, hay còn gọi là single thread. Ở máy tính hiện đại ngày nay, hầu hết các process có nhiều threads trong nó, điều này giúp tận dụng sức mạnh của những CPU có nhiều cores. Với những processes chứa multithreads, memory representation sẽ có sự thay đổi. Các threads trong một process sẽ dùng chung các vùng nhớ: text segment, data segment, và header segment, nhưng mỗi một thread sẽ có một stack riêng.</p>
+<p>Với những hệ điều hành hỗ trợ multithreads, thì đơn vị nhỏ nhất để OS schedule sẽ là thread, chứ không phải là process. Tuy nhiên, về cách OS schedule thực hiện, sẽ không có sự khác biệt nhiều giữa process và thread.</p>
+<p>Thread là một phần rộng, nên phần kiến thức chi tiết hơn sẽ được mình đề cập trong một bài viết khác.</p>
+<h2 id="2-process-scheduling">2. Process scheduling.</h2>
+<p>Mục đích của các hệ thống multiprogramming là cho phép nhiều process có thể được thực hiện cùng lúc, &ldquo;cùng lúc&rdquo; ở đây có thể là concurrency hoặc parallelism. Với single-processor system, mỗi một thời điểm sẽ chỉ có một process được CPU thực thi, khi process này rơi vào trạng thái <code>waiting</code>, sẽ có một process khác được CPU thực hiện, vì vậy sẽ có nhiều processes được CPU luân phiên thực thi, hình thức thực thi như vậy gọi là concurrency.</p>
+<p>Với multi-processor system, tại một thời điểm có thể có nhiều processes được nhiều processors thực thi cùng một lúc, hình thức thực thi như vậy gọi là parallelism. Trong phần này, mình sẽ tập trung nói về process scheduling, nên để đơn giản hoá mình sẽ nói về process scheduling trong single-processor system.</p>
+<h3 id="32-scheduling-queues">3.2. Scheduling Queues.</h3>
+<p>Khi những processes được tạo ra trong hệ thống và được OS allocate memory, những processes này sẽ được chuyển sang trạng thái <code>ready</code> và được add vào <code>ready queue</code>. Queue này nhìn chung là một linked list, header chứa pointer của PCB đầu tiên, tail sẽ pointer của PCB cuối cùng.</p>
+<p>Hệ thống cũng tồn tại nhiều queues khác. Khi một process được allocated CPU, nó sẽ có thể được thực thi cho đến khi kết thúc instruction cuối cùng, hoặc phải nhường CPU cho process khác và bị đưa ra <code>waiting queue</code>, hoặc đẩy ra <code>waiting queue</code> vì phải chờ một event nhất định ví dụ: chờ để hoàn thành việc tạo một file ở disk, lúc này có nhiều process khác cũng interact with disk, vì vậy những processes này cũng phải được xếp vào một queue khác để được chờ được disk xử lý, queue này gọi là <code>device queue</code>, mỗi một thiết bị sẽ có <code>device queue</code> riêng. Tiến trình này sẽ được mô tả rõ hơn ở sơ đồ dưới đây.</p>
+<p>
+  <img src="/img/what-is-process/queue-scheduling.png" alt="">
+
+</p>
+<h3 id="23-schedulers">2.3. Schedulers.</h3>
+<p>Một process sẽ được migrate qua nhiều queues khác nhau trong suốt vòng đời của nó. OS sẽ phải lập lịch cho những processes trong những queues này. Việc lập lịch này sẽ được thực hiện bởi scheduler.</p>
+<p>Scheduler sẽ được chia thành 3 loại chính bao gồm:
+<strong>long-term scheduler</strong>: Hầu như chỉ xuất hiện trong các hệ thống batch system, và không được sử dụng ở các hệ thống time-sharing như UNIX hay Microsoft Windows.
+<strong>medium-term scheduler</strong>: ý tưởng của kiểu scheduler này là những process nếu như cần thiết có thể bị remove ra khỏi memory và được lưu trữ tạm ở bộ nhớ thứ cấp (có thể là disk, cpu, cd &hellip;), sau đó có thể nạp lại memory để chờ thực hiện bởi CPU, cơ chế này gọi là swapping. Kiểu scheduler này xuất hiện phổ biến ở các OS hiện đại.
+<strong>short-term scheduler</strong>: Kiểu scheduler này phải chọn process cho CPU thực thi một cách rất thường xuyên, một process có thể chỉ được thực thi vài milliseconds trước khi phải chờ vì một I/O request. Thông thường, một <code>short-term scheduler</code> phải thực hiện công việc chọn process để CPU thực thi sau mỗi 100 milliseconds. Do quá trình chọn process này diễn ra liên tục, cho nên nó cũng gây ra nhiều wasted time. Điều đó dẫn đến nếu có quá nhiều process trong hệ thống, bạn có thể cảm nhận được máy tính của bạn không còn xử lý mượt mà nữa, đó là vì CPU phải switch qua lại giữa các processes quá nhiều.</p>
+<h2 id="3-conclusion">3. Conclusion.</h2>
+<p>Trong khuôn khổ bài viết này, mình đã đi qua một số những kiến thức cơ bản về process. Do kiến thức hạn hẹp của bản thân, nên trong bài viết sẽ không thể tránh khỏi những sai sót. Mình hi vọng sẽ được ai đó đóng góp ý kiến, và mình luôn sẵn sàng đón nhận.</p>
+<p>Cảm ơn tất cả mọi người đã kiên nhẫn đọc hết bài viết này của mình. Chúc mọi người có một buổi tối cuối tuần vui vẻ, hẹn gặp lại mọi người trong những bài viết sau.</p>
+
+
+                
+
+                
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/what-the-benefit-studying-university-bring-to-me/" data-toggle="tooltip" data-placement="top" title="Kiến thức ở trường đại học đã mang lại cho mình điều gì?">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+                
+
+                
+
+
+<script src="https://giscus.app/client.js"
+        data-repo="nhatthanh020996/nhatthanh020996.github.io"
+        data-repo-id="nhatthanh020996/nhatthanh020996.github.io"
+        data-category="Announcements"
+        data-category-id="your category id"
+        data-mapping="pathname"
+        data-reactions-enabled="0"
+        data-emit-metadata=""
+        data-theme="light"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/database" title="database">
+                            database
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                            git
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/pooling" title="pooling">
+                            pooling
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/postgresql" title="postgresql">
+                            postgresql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/python" title="python">
+                            python
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:nhatthanh020996@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/nhatthanh020996">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/tran-nhat-thanh-9219bb184/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; breadcrumbscollector 2023
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>

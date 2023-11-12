@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Operating system on breadcrumbscollector</title>
+    <link>https://nhatthanh020996.github.io/tags/operating-system/</link>
+    <description>Recent content in Operating system on breadcrumbscollector</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 23 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://nhatthanh020996.github.io/tags/operating-system/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Tổng quan về hệ điều hành - Process</title>
+      <link>https://nhatthanh020996.github.io/what-is-process/</link>
+      <pubDate>Mon, 23 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://nhatthanh020996.github.io/what-is-process/</guid>
+      <description>1. Process concept. 1.1. The Process Một chương trình đang được thực thi bởi máy tính gọi là Process, ví dụ: Bạn có một chương trình helloworld được viết bằng C trong file helloworld.c như sau:
+#include &amp;lt;stdio.h&amp;gt; int main() { printf(&amp;#34;Hello, World!\n&amp;#34;); return 0; } Bạn tiến hành biên dịch chương trình trên bằng câu lệnh sau trên terminal:
+gcc helloworld.c -o helloworld Bạn tiếp tục chạy câu lệnh sau trên terminal:</description>
+    </item>
+    
+  </channel>
+</rss>
