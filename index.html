@@ -259,15 +259,13 @@
 <div class="post-preview">
     <a href="https://nhatthanh020996.github.io/git-merge-and-git-rebase/">
         <h2 class="post-title">
-            Git rebase và git merge
+            Git Internal (P2) - Git rebase và git merge
         </h2>
 	
         <div class="post-content-preview">
 	
-            Git merge thực sự là gì? Giả sử chúng ta đang ở branch A và muốn merge branch B vào branch A với câu lệnh:
-git merge B Sẽ có 2 trường hợp xuất hiện:
-B đang trỏ vào commit là commit cha của commit mà A đang trỏ vào. Ở đây Git sẽ tuân thủ fast forward strategy để merge B vào A. Kết quả sẽ xấy ra như ví dụ dưới đây: # A: C1 -&gt; C2 -&gt; C3 # B: C1 -&gt; C2 -&gt; C3 -&gt; C4 -&gt; C5 git merge B # result # A: C1 -&gt; C2 -&gt; C3 -&gt; C4 -&gt; C5 # B: C1 -&gt; C2 -&gt; C3 -&gt; C4 -&gt; C5 B đang trỏ vào commit không phải là cha của commit mà A đang trỏ vào.
-       
+            Tiếp tục về Git Internal, trong bài viết này mình sẽ nói về cách git merge và git rebase vận hành, cũng như lúc nào thì dùng merge, lúc nào dùng rebase.
+        
         </div>
     </a>
     <p class="post-meta">
@@ -284,7 +282,7 @@ B đang trỏ vào commit là commit cha của commit mà A đang trỏ vào. �
 <div class="post-preview">
     <a href="https://nhatthanh020996.github.io/git-internal/">
         <h2 class="post-title">
-            Git Internal
+            Git Internal (P1)
         </h2>
 	
         <div class="post-content-preview">

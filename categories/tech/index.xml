@@ -38,7 +38,7 @@ Sau khi process được OS cung cấp memory, sẽ có data segment và text se
     </item>
     
     <item>
-      <title>Git rebase và git merge</title>
+      <title>Git Internal (P2) - Git rebase và git merge</title>
       <link>https://nhatthanh020996.github.io/git-merge-and-git-rebase/</link>
       <pubDate>Thu, 12 Oct 2023 00:00:00 +0000</pubDate>
       
@@ -49,7 +49,7 @@ B đang trỏ vào commit là commit cha của commit mà A đang trỏ vào. �
     </item>
     
     <item>
-      <title>Git Internal</title>
+      <title>Git Internal (P1)</title>
       <link>https://nhatthanh020996.github.io/git-internal/</link>
       <pubDate>Sat, 07 Oct 2023 00:00:00 +0000</pubDate>
       
