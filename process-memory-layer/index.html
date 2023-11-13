@@ -15,15 +15,15 @@
     
 
     
-    <meta name="title" content="Pgbouncer" />
-    <meta property="og:title" content="Pgbouncer" />
-    <meta property="twitter:title" content="Pgbouncer" />
+    <meta name="title" content="Operating System (P2) - Memory Layers Of A Process" />
+    <meta property="og:title" content="Operating System (P2) - Memory Layers Of A Process" />
+    <meta property="twitter:title" content="Operating System (P2) - Memory Layers Of A Process" />
     
 
     
-    <meta name="description" content="Discover the power and benefits of using pgbouncer as a connection pooling tool for PostgreSQL databases.">
-    <meta property="og:description" content="Discover the power and benefits of using pgbouncer as a connection pooling tool for PostgreSQL databases." />
-    <meta property="twitter:description" content="Discover the power and benefits of using pgbouncer as a connection pooling tool for PostgreSQL databases." />
+    <meta name="description" content="Ở trong bài viết trước về Process, mình đã có nói đến một memory representation của một process sẽ gồm những segment nào? Trong bài viết này mình sẽ nói kỹ hơn về các phần của một memory representation sẽ thay đổi ra sao trong quá trình thực thi process.">
+    <meta property="og:description" content="Ở trong bài viết trước về Process, mình đã có nói đến một memory representation của một process sẽ gồm những segment nào? Trong bài viết này mình sẽ nói kỹ hơn về các phần của một memory representation sẽ thay đổi ra sao trong quá trình thực thi process." />
+    <meta property="twitter:description" content="Ở trong bài viết trước về Process, mình đã có nói đến một memory representation của một process sẽ gồm những segment nào? Trong bài viết này mình sẽ nói kỹ hơn về các phần của một memory representation sẽ thay đổi ra sao trong quá trình thực thi process." />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="networing, operating system, computer architecture, python, socket programing, database">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Pgbouncer | breadcrumbscollector</title>
+    <title>Operating System (P2) - Memory Layers Of A Process | breadcrumbscollector</title>
 
-    <link rel="canonical" href="/pgbouncer/">
+    <link rel="canonical" href="/process-memory-layer/">
 
     
     
@@ -170,20 +170,12 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/database" title="Database">
-                            Database
-                        </a>
-                        
-                        <a class="tag" href="/tags/postgresql" title="PostgreSQL">
-                            PostgreSQL
-                        </a>
-                        
-                        <a class="tag" href="/tags/pooling" title="Pooling">
-                            Pooling
+                        <a class="tag" href="/tags/operating-system" title="Operating system">
+                            Operating system
                         </a>
                         
                     </div>
-                    <h1>Pgbouncer</h1>
+                    <h1>Operating System (P2) - Memory Layers Of A Process</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         
@@ -192,7 +184,7 @@
                                 Admin
                              
                             on 
-                            Tuesday, June 13, 2023
+                            Friday, October 20, 2023
                             
                             
                             
@@ -218,7 +210,26 @@
                 post-container">
 
                 
-                
+                <h2 id="2-memory-layers">2. Memory layers.</h2>
+<p>Memory layers của một process sẽ 4 segment chính như hình vẽ dưới đây.
+
+  <img src="/img/memory-layers/layers.jpeg" alt="">
+
+</p>
+<p>Hình ảnh trên biểu thị memory layout của một chương trình C, ở đây data segment được chia ra bao gồm uninitialized data và initialized data, nhưng để cho đơn giản ta sẽ gọi 2 phần này là data segment.</p>
+<p>Sau khi process được OS cung cấp memory, sẽ có data segment và text segment là những vùng nhớ cố định, không thay đổi về cả kích thước lẫn nội dung của 2 vùng nhớ này trong suốt quá trình process được thực thi.</p>
+<p>Heap segment và stack segment là những vùng nhớ thể thay đổi trong suốt quá trình thực thi process, mình nói là &ldquo;có thể&rdquo; vì sẽ có nhưng chương trình đơn giản không sử dụng đến hai vùng nhớ này.</p>
+<h2 id="3-text-segment-and-data-segment">3. Text segment and data segment.</h2>
+<pre tabindex="0"><code class="language-assembly" data-lang="assembly">.data
+    msg: .asciiz &#34;hello world \n&#34;
+
+.text
+    li $v0, 4
+    la $a0, msg
+    syscall
+</code></pre><h2 id="4-stack-segment">4. Stack segment.</h2>
+<h2 id="5-conclusion">5. Conclusion.</h2>
+
 
                 
 
@@ -227,13 +238,13 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/how-database-read-records-from-disk/" data-toggle="tooltip" data-placement="top" title="How database read records from disk">&larr;
+                        <a href="/git-merge-and-git-rebase/" data-toggle="tooltip" data-placement="top" title="Git rebase và git merge">&larr;
                             Previous Post</a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/isolation/" data-toggle="tooltip" data-placement="top" title="Isolation property in ACID">Next
+                        <a href="/what-the-benefit-studying-university-bring-to-me/" data-toggle="tooltip" data-placement="top" title="Kiến thức ở trường đại học đã mang lại cho mình điều gì?">Next
                             Post &rarr;</a>
                     </li>
                     
