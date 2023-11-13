@@ -21,7 +21,7 @@ gcc helloworld.c -o helloworld Bạn tiếp tục chạy câu lệnh sau trên t
     <item>
       <title>Operating System (P2) - Memory Layers Of A Process</title>
       <link>https://nhatthanh020996.github.io/process-memory-layer/</link>
-      <pubDate>Fri, 20 Oct 2023 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 23 Oct 2023 00:00:00 +0000</pubDate>
       
       <guid>https://nhatthanh020996.github.io/process-memory-layer/</guid>
       <description>2. Memory layers. Memory layers của một process sẽ 4 segment chính như hình vẽ dưới đây. Hình ảnh trên biểu thị memory layout của một chương trình C, ở đây data segment được chia ra bao gồm uninitialized data và initialized data, nhưng để cho đơn giản ta sẽ gọi 2 phần này là data segment.
