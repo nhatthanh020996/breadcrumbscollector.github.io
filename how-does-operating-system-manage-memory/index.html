@@ -15,15 +15,15 @@
     
 
     
-    <meta name="title" content="Operating System (P2) - Memory Layers Of A Process" />
-    <meta property="og:title" content="Operating System (P2) - Memory Layers Of A Process" />
-    <meta property="twitter:title" content="Operating System (P2) - Memory Layers Of A Process" />
+    <meta name="title" content="Operating System (P3) - Memory Management" />
+    <meta property="og:title" content="Operating System (P3) - Memory Management" />
+    <meta property="twitter:title" content="Operating System (P3) - Memory Management" />
     
 
     
-    <meta name="description" content="Ở trong bài viết trước về Process, mình đã có nói đến một memory representation của một process sẽ gồm những segment nào? Trong bài viết này mình sẽ nói kỹ hơn về các phần của một memory representation sẽ thay đổi ra sao trong quá trình thực thi process.">
-    <meta property="og:description" content="Ở trong bài viết trước về Process, mình đã có nói đến một memory representation của một process sẽ gồm những segment nào? Trong bài viết này mình sẽ nói kỹ hơn về các phần của một memory representation sẽ thay đổi ra sao trong quá trình thực thi process." />
-    <meta property="twitter:description" content="Ở trong bài viết trước về Process, mình đã có nói đến một memory representation của một process sẽ gồm những segment nào? Trong bài viết này mình sẽ nói kỹ hơn về các phần của một memory representation sẽ thay đổi ra sao trong quá trình thực thi process." />
+    <meta name="description" content="Khi tồn tại nhiều processes trong hệ thống, làm thế nào để Operating System có thể cấp phát bộ nhớ cho những processes này một cách hợp lý nhất. Memory Management là một trong những nhiệm vụ quan trọng nhất của OS, và trong bài viết này mình sẽ nói về điều này.">
+    <meta property="og:description" content="Khi tồn tại nhiều processes trong hệ thống, làm thế nào để Operating System có thể cấp phát bộ nhớ cho những processes này một cách hợp lý nhất. Memory Management là một trong những nhiệm vụ quan trọng nhất của OS, và trong bài viết này mình sẽ nói về điều này." />
+    <meta property="twitter:description" content="Khi tồn tại nhiều processes trong hệ thống, làm thế nào để Operating System có thể cấp phát bộ nhớ cho những processes này một cách hợp lý nhất. Memory Management là một trong những nhiệm vụ quan trọng nhất của OS, và trong bài viết này mình sẽ nói về điều này." />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="networing, operating system, computer architecture, python, socket programing, database">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Operating System (P2) - Memory Layers Of A Process | breadcrumbscollector</title>
+    <title>Operating System (P3) - Memory Management | breadcrumbscollector</title>
 
-    <link rel="canonical" href="/process-memory-layer/">
+    <link rel="canonical" href="/how-does-operating-system-manage-memory/">
 
     
     
@@ -175,7 +175,7 @@
                         </a>
                         
                     </div>
-                    <h1>Operating System (P2) - Memory Layers Of A Process</h1>
+                    <h1>Operating System (P3) - Memory Management</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         
@@ -184,7 +184,7 @@
                                 Admin
                              
                             on 
-                            Tuesday, October 24, 2023
+                            Friday, October 27, 2023
                             
                             
                             
@@ -210,102 +210,53 @@
                 post-container">
 
                 
-                <h2 id="2-memory-layers">2. Memory layers.</h2>
-<p>Memory layers của một process sẽ 4 segment chính như hình vẽ dưới đây.
-
-  <img src="/img/memory-layers/layers.jpeg" alt="">
-
-</p>
-<p>Hình ảnh trên biểu thị memory layout của một chương trình C, ở đây data segment được chia ra bao gồm uninitialized data và initialized data, nhưng để cho đơn giản ta sẽ gọi 2 phần này là data segment.</p>
-<p>Sau khi process được OS cung cấp memory, sẽ có data segment và text segment là những vùng nhớ cố định, không thay đổi về cả kích thước lẫn nội dung của 2 vùng nhớ này trong suốt quá trình process được thực thi.</p>
-<p>Heap segment và stack segment là những vùng nhớ thể thay đổi trong suốt quá trình thực thi process, mình nói là &ldquo;có thể&rdquo; vì sẽ có nhưng chương trình đơn giản không sử dụng đến hai vùng nhớ này.</p>
-<h2 id="3-text-segment-and-data-segment">3. Text segment and data segment.</h2>
+                <h2 id="logical-vs-physical-address-space">Logical vs Physical Address Space.</h2>
+<h3 id="11-logical-address">1.1. Logical address.</h3>
+<p>Logical address sẽ được sinh ra ở lúc biên dịch chương trình,
+Ví dụ ta có một chương trình đơn giản helloworld như sau:</p>
 <pre tabindex="0"><code class="language-assembly" data-lang="assembly">.data
-    msg: .asciiz &#34;hello world \n&#34;
+    msg: .asciiz &#34;Hello world! \n&#34;
 
 .text
     li $v0, 4
     la $a0, msg
     syscall
-</code></pre><p>Trên đây là một chương trình helloworld đơn giản được viết bằng assembly với kiến trúc tập lệnh MIPS.</p>
-<p>Sau khi mình chạy chương trình trên bằng MARS simulator - MIPS Assembler and Runtime Simulator, chương trình trên sẽ được đưa vào memory simulator với 2 vùng nhớ như sau:</p>
-<p><strong>Text Segment</strong>
+</code></pre><p>Sau khi biên dịch, ta sẽ thấy được logical address của mỗi instruction như sau:</p>
+<p>
+  <img src="/img/memory-management/logical-address.png" alt="">
 
-  <img src="/img/memory-layers/text-segment.png" alt="">
-
-
-text segment là space memory chứa instructions của process.</p>
-<p><strong>Data Segment</strong>
-
-  <img src="/img/memory-layers/data-segment.png" alt="">
-
-
-data segment là space memory chứa static data của process, trong chương trình trên chính là dòng text &ldquo;hello world \n&rdquo;</p>
-<p>Khi process được allocated CPU bởi OS để thực thi instructions, thanh ghi PC sẽ chứa địa chỉ của instruction đầu tiên trong text segment, trong chương trình này là: <code>0x00400000</code>. CPU sẽ fetches instruction có địa chỉ được lưu trên thanh ghi PC, instruction sau khi decode sẽ được lưu ở thanh ghi IR (instruction register), giá trị trong thanh ghi PC sẽ được cộng lên đúng bằng độ dài của instruction vừa được fetch, trong trường hợp này là 4 bytes. Sau đó, Control Unit sẽ điều phối CPU để execute instruction này, cách CPU thực thi một instruction mình sẽ giải thích rõ hơn trong bài viết về kiến trúc máy tính. Chu trình fetch-execute một instruction như vậy sẽ diễn ra cho đến khi kết thúc việc execute instruction cuối cùng của process.</p>
-<h2 id="4-stack-segment">4. Stack segment.</h2>
-<pre tabindex="0"><code class="language-assembly" data-lang="assembly">.data
-
-msg: .asciiz &#34;Enter a number&#34;
-answer: .asciiz &#34;\nFactorial is: &#34;
-
-.text
-
-# welcome message
-li $v0, 4
-la $a0, msg
-syscall
-
-# read integer
-li $v0, 5
-syscall
-
-# print the integer
-move $a0, $v0
-li $v0, 1
-syscall
-
-jal calculate_factorial
-move $a1, $v0
-
-li $v0, 4
-la $a0, answer
-syscall
-
-move $a0, $a1
-li $v0, 1
-syscall
-
-li $v0, 10
-syscall
-
-calculate_factorial:
-    addi $sp, $sp, -4
-    sw $ra, ($sp)
-
-    li $v0, 1
-    multiply:
-        beq $a0, $zero, return
-        mul $v0, $v0, $a0
-        addi $a0, $a0, -1
-        j multiply
-
-    return:
-    lw $ra, ($sp)
-    addi $sp, $sp, 4  # Deallocate the stack space
-    jr $ra
-</code></pre><p>Đây là chương trình tính giai thừa của một số tự nhiên bất kỳ được nhập vào từ bàn phím, trong chương trình này ta thực hiện lệnh gọi hàm <code>calculate_factorial</code> bằng câu lệnh <code>jal calculate_factorial</code>. Ở hàm <code>calculate_factorial</code>, ta thấy có 2 câu lệnh:</p>
-<pre tabindex="0"><code>    addi $sp, $sp, -4
-    sw $ra, ($sp)
-</code></pre><p>Ở câu lệnh đầu tiên, stack pointer sẽ giảm xuống 4bytes, space memory từ địa chỉ ban đầu của $sp đến 4 bytes trở xuống sẽ dùng để lưu các giá trị như: biến local, params truyền vào, địa chỉ trả về sau khi kết thúc lời gọi hàm, trong chương trình này địa chỉ trả về sẽ được lưu lại bằng instruction: <code>sw $ra, ($sp)</code>. Space memory như thê này sẽ được gọi là <code>stack frame</code>. Mỗi một lần gọi hàm như vậy, nếu cần một <code>stack frame</code>, thì giá trị của thanh ghi $sp lại được giảm xuống đúng bằng độ dài của <code>stack frame</code>.</p>
-<p>Để kết thúc lời gọi hàm, <code>stack frame</code> sẽ được giải phóng với instruction:</p>
-<pre tabindex="0"><code>addi $sp, $sp, 4 
-</code></pre><p>chương trình sẽ tiếp tục thực hiện instruction tiếp theo, địa chỉ của nó được lưu trong thanh ghi $ra:</p>
-<pre tabindex="0"><code>jr $ra
-</code></pre><p>$ra lúc này là địa chỉ của instruction <code>move $a1, $v0</code>, sau khi thực thi <code>jr $ra</code>, giá trị của thanh ghi $pc sẽ được update lại bằng giá trị của $ra, lại tiếp tục thực hiện chu trình fetch-execute instruction.</p>
-<p>Chú ý rằng giới hạn vùng nhớ dành cho stack segment của một process sẽ tuỳ thuộc vào từng hệ điều hành, ví dụ với macOS mà mình đang sử dụng thì giá trị này là 8MB. Từ đây ta có thể suy ra được nguyên nhân gây ra lỗi stack overflow, đó là do stack frame được tạo quá nhiều dẫn đến vượt quá giới hạn không gian vùng nhớ dành cho stack segment.</p>
-<h2 id="5-conclusion">5. Conclusion.</h2>
-<p>Trong bài viết này mình đã chỉ ra một memory representation của một process sẽ trông như thế nào? các memory layers trong đó sẽ trông ra sao trong quá trình process được thực thi? Từ những kiến thức này có thể sẽ giúp ích cho chúng ta viết được một chương trình giúp tiết kiệm memory, hay có thể hiểu để giải thích một số vấn đề, bugs mà ta gặp phải trong quá trình làm việc.</p>
-<p>Bài viết chắc chắn sẽ còn nhiều thiếu sót, hi vọng sẽ được đóng góp ý kiến với đọc giả. Cảm ơn các bạn vì đã đọc bài viết lần này, hẹn các bạn trong những bài viết sau.</p>
+</p>
+<p>Các giá trị ở cột <code>Address</code> chính là logical address của mỗi instruction tương ứng.</p>
+<h3 id="12-physical-address">1.2. Physical address.</h3>
+<p>Là địa chỉ thật sự mà instruction, data, stack,&hellip; trong memory, sau khi process được OS cấp phát memory. Với những hệ điều hành hiện đại ngày này, bộ nhớ của một process trong memory sẽ không phải là một giải liên tục. Cách phân bổ chúng như thế nào sẽ được nói rõ hơn ở phần sau.</p>
+<h2 id="paging">Paging.</h2>
+<h3 id="21-paging-concept">2.1. Paging concept.</h3>
+<p>Chia physical memory ra thành các block có kích thước bằng nhau và là luỹ thừa của 2 (tại sao phải là luỹ thừa của 2 thì sẽ được giải thích ở phần sau). Block này gọi là <code>frames</code>.</p>
+<p>Chia logical memory ra thành các block có kích thước bằng với một frame, mỗi một block như vậy gọi là một <code>page</code></p>
+<h3 id="22-allocate-memory-to-process">2.2. Allocate memory to process.</h3>
+<p>Để load một chương trình vào bộ nhớ trong thì phải theo các bước sau:</p>
+<ul>
+<li>
+<p>Phải keep track tất cả những free frames in RAM.</p>
+</li>
+<li>
+<p>Để run một chương trình có kích thước n pages, cần phải tìm n free frames và load chương trình vào trong bộ nhớ.</p>
+</li>
+<li>
+<p>Setup một page table để translate logical addresses to physical addresses.</p>
+</li>
+<li>
+<p>Khi một frame được giải phóng sau khi được thực hiện trong tiến trình, frame này sẽ được cập nhật vào danh sách những frames đang nhàn rỗi trong bộ nhớ, mà có thể được sử dụng bởi những tiến trình khác.</p>
+</li>
+<li>
+<p>Mỗi một process có một page table riêng.</p>
+</li>
+<li>
+<p>Mỗi một page table của một process sẽ được lưu trong process control block của nó.</p>
+</li>
+</ul>
+<p><strong>Note</strong>: Ở phương pháp này vẫn tồn tại phân mảnh, thường là ở frame cuối cùng, khi page cuối cùng có kích thước nhỏ hơn frame.</p>
+<h2 id="address-translation-scheme">Address Translation scheme.</h2>
 
 
                 
@@ -315,15 +266,10 @@ calculate_factorial:
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/what-is-process/" data-toggle="tooltip" data-placement="top" title="Operating System (P1) - Process.">&larr;
+                        <a href="/process-memory-layer/" data-toggle="tooltip" data-placement="top" title="Operating System (P2) - Memory Layers Of A Process">&larr;
                             Previous Post</a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/how-does-operating-system-manage-memory/" data-toggle="tooltip" data-placement="top" title="Operating System (P3) - Memory Management">Next
-                            Post &rarr;</a>
-                    </li>
                     
                 </ul>
                 

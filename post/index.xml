@@ -6,7 +6,18 @@
     <description>Recent content in Posts on breadcrumbscollector</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 24 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://nhatthanh020996.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 27 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://nhatthanh020996.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Operating System (P3) - Memory Management</title>
+      <link>https://nhatthanh020996.github.io/how-does-operating-system-manage-memory/</link>
+      <pubDate>Fri, 27 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://nhatthanh020996.github.io/how-does-operating-system-manage-memory/</guid>
+      <description>Logical vs Physical Address Space. 1.1. Logical address. Logical address sẽ được sinh ra ở lúc biên dịch chương trình, Ví dụ ta có một chương trình đơn giản helloworld như sau:
+.data msg: .asciiz &amp;#34;Hello world! \n&amp;#34; .text li $v0, 4 la $a0, msg syscall Sau khi biên dịch, ta sẽ thấy được logical address của mỗi instruction như sau:
+Các giá trị ở cột Address chính là logical address của mỗi instruction tương ứng.</description>
+    </item>
+    
     <item>
       <title>Operating System (P2) - Memory Layers Of A Process</title>
       <link>https://nhatthanh020996.github.io/process-memory-layer/</link>
