@@ -13,7 +13,7 @@
       <pubDate>Fri, 27 Oct 2023 00:00:00 +0000</pubDate>
       
       <guid>https://nhatthanh020996.github.io/how-does-operating-system-manage-memory/</guid>
-      <description>Logical vs Physical Address Space. 1.1. Logical address. Logical address sẽ được sinh ra ở lúc biên dịch chương trình, Ví dụ ta có một chương trình đơn giản helloworld như sau:
+      <description>1. Logical vs Physical Address Space. 1.1. Logical address. Logical address sẽ được sinh ra ở lúc biên dịch chương trình, Ví dụ ta có một chương trình đơn giản helloworld như sau:
 .data msg: .asciiz &amp;#34;Hello world! \n&amp;#34; .text li $v0, 4 la $a0, msg syscall Sau khi biên dịch, ta sẽ thấy được logical address của mỗi instruction như sau:
 Các giá trị ở cột Address chính là logical address của mỗi instruction tương ứng.</description>
     </item>
