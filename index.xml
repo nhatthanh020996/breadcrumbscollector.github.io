@@ -135,21 +135,23 @@ Phantom reads: if you run a query twice, the second query could see different ro
     </item>
     
     <item>
-      <title>Socket Programming</title>
-      <link>https://nhatthanh020996.github.io/socket-programming/</link>
-      <pubDate>Sun, 11 Jun 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://nhatthanh020996.github.io/socket-programming/</guid>
-      <description>Introduction. Conclusion. </description>
-    </item>
-    
-    <item>
       <title>Hello world</title>
       <link>https://nhatthanh020996.github.io/testpage/</link>
       <pubDate>Sat, 10 Jun 2023 00:00:00 +0000</pubDate>
       
       <guid>https://nhatthanh020996.github.io/testpage/</guid>
       <description>Hello world! </description>
+    </item>
+    
+    <item>
+      <title>Computer Network (P1) - Berkeley Socket API</title>
+      <link>https://nhatthanh020996.github.io/socket-programming/</link>
+      <pubDate>Wed, 11 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://nhatthanh020996.github.io/socket-programming/</guid>
+      <description>1. Introduction. Socket là một trong những kiến thức low-level nhất và quan trọng nhất của computer networking. Nắm vững kiến thức về socket là tiền đề quan trọng để tiếp cận những kiến thức high-level hơn về computer networking như, TCP/IP protocol, HTTP, Websocket, SSH &amp;hellip; Bài viết này sẽ cung cấp cho bạn những kiến thức cơ bản sau:
+Lịch sử ra đời của ARPANET và TCP/IP.
+Tìm hiểu về Berkeley Socket API.</description>
     </item>
     
     <item>
