@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="breadcrumbscollector">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="/img/posts/isolation/title_image.jpeg">
+    <meta property="twitter:image" content="/img/posts/isolation/title_image.jpeg" />
+    
+
+    
+    <meta name="title" content="Computer Network (P2) - Berkeley Socket API" />
+    <meta property="og:title" content="Computer Network (P2) - Berkeley Socket API" />
+    <meta property="twitter:title" content="Computer Network (P2) - Berkeley Socket API" />
+    
+
+    
+    <meta name="description" content="Bài viết này mình sẽ cùng tìm hiểu về Berkeley Socket API hay còn gọi ngắn gọn hơn là socket - một trong những khái niệm quan trọng nhất trong computer network.">
+    <meta property="og:description" content="Bài viết này mình sẽ cùng tìm hiểu về Berkeley Socket API hay còn gọi ngắn gọn hơn là socket - một trong những khái niệm quan trọng nhất trong computer network." />
+    <meta property="twitter:description" content="Bài viết này mình sẽ cùng tìm hiểu về Berkeley Socket API hay còn gọi ngắn gọn hơn là socket - một trong những khái niệm quan trọng nhất trong computer network." />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="networing, operating system, computer architecture, python, socket programing, database">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Computer Network (P2) - Berkeley Socket API | breadcrumbscollector</title>
+
+    <link rel="canonical" href="/socket-programming-p1/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">breadcrumbscollector</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">All Posts</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/tech/">tech</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/archive//">ARCHIVE</a></li>
+                    
+                        <li><a href="/notes//">NOTES</a></li>
+                    
+                        <li><a href="/about/index//">ABOUT</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/posts/isolation/title_image.jpeg')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/tcp/ip" title="TCP/IP">
+                            TCP/IP
+                        </a>
+                        
+                        <a class="tag" href="/tags/socket" title="Socket">
+                            Socket
+                        </a>
+                        
+                        <a class="tag" href="/tags/networking" title="Networking">
+                            Networking
+                        </a>
+                        
+                    </div>
+                    <h1>Computer Network (P2) - Berkeley Socket API</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                Admin
+                             
+                            on 
+                            Wednesday, November 1, 2023
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <h2 id="1-introduction">1. Introduction.</h2>
+<p>Socket là một trong những kiến thức low-level nhất và quan trọng nhất của computer networking. Nắm vững kiến thức về socket là tiền đề quan trọng để tiếp cận những kiến thức high-level hơn về computer networking như, TCP/IP protocol, HTTP, Websocket, SSH &hellip; Bài viết này sẽ cung cấp cho bạn những kiến thức cơ bản sau:</p>
+<ul>
+<li>
+<p>Lịch sử ra đời của ARPANET và TCP/IP.</p>
+</li>
+<li>
+<p>Tìm hiểu về Berkeley Socket API.</p>
+</li>
+<li>
+<p>Viết một chương trình đơn giản để mô tả flow hoạt động của Berkeley Socket API.</p>
+</li>
+</ul>
+<p>Bây giờ chúng ta cùng bắt đầu bài viết nhé.</p>
+<h2 id="2-socket-history">2. Socket History.</h2>
+<p>Làm thế nào để 2 process đang chạy trên 2 máy tính khác nhau có thể trao đổi data được với nhau? đó là lý do thúc đẩy sự ra đời của ARPANET vào đầu thập nên 70 của thế ký trước. Cũng trong những năm đầu của thập niên 70 đó, TCP/IP protocol ra đời lúc đó vẫn đang được gọi với cái tên Transmission Control Program. Sau đó vào năm 1983, TCP/IP đã được APARNET sử dụng làm protocol chính cho toàn bộ mạng máy tính của quân đội Mỹ. ARPANET và TCP/IP chính là foudation của mạng INTERNET sau này.</p>
+<p>Tại sao mình lại nhắc đến ARPANET và TCP/IP ở đây? vì mình muốn nói rằng bản thân TCP/IP không phải là một tập con của socket vì TCP/IP có trước cơ mà. Bản thân socket nó không phải là một protocol hay cái gì hết, nó đơn giản chỉ là một interface giúp người dùng máy tính có thể dễ dàng hơn để tạo ra một protocol - một việc mà trước khi có socket API, ta phải can thiệp trực tiếp vào OS Kernel, và chỉ có những nhà khoa học máy tinh mới làm được.</p>
+<h2 id="3-berkeley-socket-api">3. Berkeley Socket API.</h2>
+<h3 id="31-history">3.1. History.</h3>
+<p>Trước khi Berkeley Socket API ra đời, để tạo được một network connection trên một OS nhất định, lập trình viên phải can thiệp vào OS kernel, mỗi một loại OS khác nhau lại phải can thiệp một cách khác nhau. Năm 1983, Hệ điều hành 4.2BSD Unix ra đời từ phòng nghiên cứu của đại học Berkeley, Hệ điều hành này cung cấp cho developers bộ APIs cho phép khởi tạo và sử dụng một network connection một cách dễ dàng hơn, lúc này developers không cần phải can thiệp trực tiếp vào OS Kernel để tạo ra một network connection nữa.</p>
+<p>Sau sự ra đời của Berkeley Socket API, nhiều OS khác đương thời đã implement API này, biến nó trở thành một standard interface. Hiện nay, hầu hết các hệ điều hành hiện đại cũng đang implement Berkeley Socket API. Từ khi Berkeley Socket API được implement bời hầu hết các hệ điều hành, developers đã có thể dễ dàng tạo ra và sử dụng một network connection mà không cần quan tâm đến hệ điều hành mà họ đang sử dụng là gì (vì hầu hết OS đều implement API này).</p>
+<p>Berkeley Socket API tiếp tục phát triển với một vài thay đổi nhỏ và cuối cùng trở thành một component trong POSIX specification - Portable Operating System Interface cũng là một interface khác, nhưng là một standard system interface, giúp các biến thể UNIX-like OS có thể cùng follow một standard nào đó, dẫn đến một sự thống nhất cần thiết. Ví dụ lệnh <code>ls</code> thì ở macOS, debian hay ubuntu đều mang một ý nghĩa như nhau.</p>
+<h3 id="32-socket-api-functions">3.2. Socket API functions.</h3>
+<p>The Berkeley socket API cung cấp những functions sau:</p>
+<ul>
+<li>
+<p><code>socket()</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#ff79c6">#include</span> <span style="color:#ff79c6">&lt;sys/socket.h&gt;</span><span style="color:#ff79c6">
+</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd">int</span> <span style="color:#50fa7b">socket</span>(<span style="color:#8be9fd">int</span> domain, <span style="color:#8be9fd">int</span> type, <span style="color:#8be9fd">int</span> protocol);
+</span></span></code></pre></div><p>Function này tạo ra một socket - một endpoint communication, ví dụ: process A muốn trao đổi data với process B, thì cả A và B đều phải tạo ra 2 endpoint và trao đổi data giữa A và B sẽ được diễn ra thông qua 2 endpoint này. Function này sẽ trả về một file descriptor (kiểu integer) - là một indentifier của một file trong UNIX-like OS, ở đây socket là một special file type. Trong UNIX-like OS, mọi thứ đều là file, file ở đây không được hiểu là file thông thường được lưu trữ trong disk, mà một entity trong UNIX-like OS.</p>
+<p><code>domain</code>: để chỉ communication domain, ví dụ: AF_UNIX - được dùng khi 2 processes chạy trên cùng một host. AF_INET - được dùng khi 2 processes chạy trên 2 host khác nhau, và indentifiers trong mạng máy tính của 2 host này được biểu thị bằng IPv4 Internet protocols.
+<code>type</code>: socket type - xác định protocol sẽ được sử dụng ở tầng transport. Ví dụ: SOCK_STREAM - khi muốn áp dụng TCP ở tầng transport, SOCK_DGRAM - khi muốn áp dụng UDP ở tầng transport.</p>
+</li>
+<li>
+<p><code>bind()</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#ff79c6">#include</span> <span style="color:#ff79c6">&lt;sys/socket.h&gt;</span><span style="color:#ff79c6">
+</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd">int</span> <span style="color:#50fa7b">bind</span>(<span style="color:#8be9fd">int</span> sockfd, <span style="color:#ff79c6">const</span> <span style="color:#ff79c6">struct</span> sockaddr <span style="color:#ff79c6">*</span>addr, <span style="color:#8be9fd">socklen_t</span> addrlen);
+</span></span></code></pre></div><p>Sau khi socket entity được create bới hàm socket(), bind() function sẽ tiến hành assign một địa chỉ cho socket đó. Ví dụ: giả sự socket được tạo ra với SOCK_STREAM type, ta có thể assign cho nó address là &lsquo;127.0.0.1&rsquo; và port: 8080. Trong đó với giá trị của port, được biểu thị bằng 16bits =&gt; tổng số socket tối ta có thể tạo ra trong một máy tính chạy linux kernel là 2^16 - 1 = 65535. Về mặt lý thuyết, đây cũng chính là số connection tối đa mà một máy tính chạy linux kernel có thể đạt được, tất nhiên nó còn phụ thuộc vào resource về phần cứng của máy tính và nhiều yếu tố khác, nên gần như chắc chắn sẽ không đạt được con số này trên bất kỳ máy tính nào.</p>
+</li>
+<li>
+<p><code>listen()</code></p>
+<pre tabindex="0"><code>#include &lt;sys/socket.h&gt;
+
+int listen(int sockfd, int backlog);
+</code></pre><p>Function này chỉ sử dụng với server socket, nó đánh dấu rằng socket với file descriptor là <code>sockfd</code> bắt đầu lắng nghe yêu cầu tạo connection từ client sockets.</p>
+<p><code>sockfd</code>: file descriptor của server socket.
+<code>backlog</code>: số connection tối đa mà accept queue có thể chấp nhận.</p>
+</li>
+<li>
+<p><code>connect()</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#ff79c6">#include</span> <span style="color:#ff79c6">&lt;sys/socket.h&gt;</span><span style="color:#ff79c6">
+</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd">int</span> <span style="color:#50fa7b">connect</span>(<span style="color:#8be9fd">int</span> sockfd, <span style="color:#ff79c6">const</span> <span style="color:#ff79c6">struct</span> sockaddr <span style="color:#ff79c6">*</span>addr, <span style="color:#8be9fd">socklen_t</span> addrlen);
+</span></span></code></pre></div><p>Hàm này chỉ thực hiện khi socket type là SOCK_STREAM, với socket type là SOCK_DGRAM thì không dùng. Client socket dùng hàm này để yêu cầu tạo connection với server socket.</p>
+<p><code>sockfd</code>: file descriptor của client socket.
+<code>sockaddr</code>: address và port của server socket.</p>
+<p>Sau khi server socket nhận lời yêu cầu tạo connection từ client socket, sẽ tiến thành three-handshake procedure, sau khi thành công three-handshake, yêu cầu sẽ được chuyển vào accept queue. Server socket sẽ lấy pop các phần tử trong accept queue để tạo connection.</p>
+</li>
+<li>
+<p><code>accept()</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#ff79c6">#include</span> <span style="color:#ff79c6">&lt;sys/socket.h&gt;</span><span style="color:#ff79c6">
+</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd">int</span> <span style="color:#50fa7b">accept</span>(<span style="color:#8be9fd">int</span> sockfd, <span style="color:#ff79c6">struct</span> sockaddr <span style="color:#ff79c6">*</span>_Nullable <span style="color:#ff79c6">restrict</span> addr, <span style="color:#8be9fd">socklen_t</span> <span style="color:#ff79c6">*</span>_Nullable <span style="color:#ff79c6">restrict</span> addrlen);
+</span></span></code></pre></div><p>Hàm này chỉ thực hiện khi socket type là SOCK_STREAM, với socket type là SOCK_DGRAM thì không dùng.</p>
+<p>accept() được thự hiện bởi socket server, sau khi accept incoming attempt, một socket mới sẽ được tạo ra, ta gọi socket này là: conn socket - đại diện cho connection giữa client và server socket. Từ đó về sau, conn socket sẽ giữa vai trò trao đổi data với client socket.</p>
+<p><code>sockfd</code>: file descriptor của server socket.
+<code>sockaddr</code>: địa chỉ + port của client socket.</p>
+</li>
+<li>
+<p><code>send()</code>, <code>recv()</code>, <code>sendto()</code>, and <code>recvfrom()</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#ff79c6">#include</span> <span style="color:#ff79c6">&lt;sys/socket.h&gt;</span><span style="color:#ff79c6">
+</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd">ssize_t</span> <span style="color:#50fa7b">send</span>(<span style="color:#8be9fd">int</span> sockfd, <span style="color:#ff79c6">const</span> <span style="color:#8be9fd">void</span> buf[.len], <span style="color:#8be9fd">size_t</span> len, <span style="color:#8be9fd">int</span> flags);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd">ssize_t</span> <span style="color:#50fa7b">sendto</span>(<span style="color:#8be9fd">int</span> sockfd, <span style="color:#ff79c6">const</span> <span style="color:#8be9fd">void</span> buf[.len], <span style="color:#8be9fd">size_t</span> len, <span style="color:#8be9fd">int</span> flags, <span style="color:#ff79c6">const</span> <span style="color:#ff79c6">struct</span> sockaddr <span style="color:#ff79c6">*</span>dest_addr, <span style="color:#8be9fd">socklen_t</span> addrlen);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd">ssize_t</span> <span style="color:#50fa7b">recv</span>(<span style="color:#8be9fd">int</span> sockfd, <span style="color:#8be9fd">void</span> buf[.len], <span style="color:#8be9fd">size_t</span> len, <span style="color:#8be9fd">int</span> flags);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd">ssize_t</span> <span style="color:#50fa7b">recvfrom</span>(<span style="color:#8be9fd">int</span> sockfd, <span style="color:#8be9fd">void</span> buf[<span style="color:#ff79c6">restrict</span> .len], <span style="color:#8be9fd">size_t</span> len,
+</span></span><span style="display:flex;"><span>                 <span style="color:#8be9fd">int</span> flags,
+</span></span><span style="display:flex;"><span>                 <span style="color:#ff79c6">struct</span> sockaddr <span style="color:#ff79c6">*</span>_Nullable <span style="color:#ff79c6">restrict</span> src_addr,
+</span></span><span style="display:flex;"><span>                 <span style="color:#8be9fd">socklen_t</span> <span style="color:#ff79c6">*</span>_Nullable <span style="color:#ff79c6">restrict</span> addrlen);
+</span></span></code></pre></div><p>Sau khi connection được tạo ra, conn socket và client socket sẽ tiến hành trao đổi data với nhau.
+<code>send()</code>: là hàm gửi data đi tới socket khác.
+<code>recv()</code>: là hàm nhận data từ socket khác.</p>
+</li>
+<li>
+<p><code>close()</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span><span style="color:#ff79c6">#include</span> <span style="color:#ff79c6">&lt;unistd.h&gt;</span><span style="color:#ff79c6">
+</span></span></span><span style="display:flex;"><span><span style="color:#ff79c6"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd">int</span> <span style="color:#50fa7b">close</span>(<span style="color:#8be9fd">int</span> fd);
+</span></span></code></pre></div><p>Sau khi trao đổi data xong, cả client socket và conn socket đều có thể chủ động close connection. Sau khi gọi hàm close, socket sẽ được giải phóng khỏi bộ nhớ.</p>
+</li>
+</ul>
+<h3 id="33-sequence-of-function-calls">3.3. Sequence of function calls.</h3>
+<p>
+  <img src="/img/socket/sockets-tcp-flow.webp" alt="">
+
+
+Hình ảnh trên biểu thị thứ tự các functions được call từ khi một server socket và client socket được khởi tạo, cho đến khi client socket gửi request tạo connection cho server socket, rồi quá trình trao đổi data, cuối cùng là kết thúc bằng close connection.</p>
+<h2 id="4-reference">4. Reference.</h2>
+<ul>
+<li><a href="https://csperkins.org/teaching/2007-2008/networked-systems/lecture04.pdf">https://csperkins.org/teaching/2007-2008/networked-systems/lecture04.pdf</a></li>
+<li><a href="https://en.wikipedia.org/wiki/ARPANET#cite_note-59">https://en.wikipedia.org/wiki/ARPANET#cite_note-59</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Berkeley_sockets">https://en.wikipedia.org/wiki/Berkeley_sockets</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Unix_domain_socket">https://en.wikipedia.org/wiki/Unix_domain_socket</a></li>
+<li><a href="https://www.geeksforgeeks.org/packet-loss-detection-algorithms/">https://www.geeksforgeeks.org/packet-loss-detection-algorithms/</a></li>
+</ul>
+
+
+                
+
+                
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/how-does-operating-system-manage-memory/" data-toggle="tooltip" data-placement="top" title="Operating System (P3) - Memory Management">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/socket-programing-p2/" data-toggle="tooltip" data-placement="top" title="Computer Network (P1) - Network components">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+                
+
+                
+
+
+<script src="https://giscus.app/client.js"
+        data-repo="nhatthanh020996/nhatthanh020996.github.io"
+        data-repo-id="nhatthanh020996/nhatthanh020996.github.io"
+        data-category="Announcements"
+        data-category-id="your category id"
+        data-mapping="pathname"
+        data-reactions-enabled="0"
+        data-emit-metadata=""
+        data-theme="light"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+</script>
+
+
+            </div>
+
+            
+            
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/database" title="database">
+                            database
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                            git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/networking" title="networking">
+                            networking
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/operating-system" title="operating-system">
+                            operating-system
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/pooling" title="pooling">
+                            pooling
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/postgresql" title="postgresql">
+                            postgresql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/python" title="python">
+                            python
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/socket" title="socket">
+                            socket
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/tcp/ip" title="tcp/ip">
+                            tcp/ip
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:nhatthanh020996@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/nhatthanh020996">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://www.linkedin.com/in/tran-nhat-thanh-9219bb184/">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; breadcrumbscollector 2023
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        
+        
+        
+        
+            _containerSelector = 'div.post-container'
+        
+
+        
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        
+        $(selector).html('')
+
+        
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    
+
+
+    loadAsync("\/js\/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>

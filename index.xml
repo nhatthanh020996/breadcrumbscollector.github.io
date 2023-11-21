@@ -6,13 +6,23 @@
     <description>Recent content on breadcrumbscollector</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 01 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://nhatthanh020996.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 04 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://nhatthanh020996.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Computer Network (P1) - Berkeley Socket API</title>
-      <link>https://nhatthanh020996.github.io/socket-programming/</link>
+      <title>Computer Network (P1) - Network components</title>
+      <link>https://nhatthanh020996.github.io/socket-programing-p2/</link>
+      <pubDate>Sat, 04 Nov 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://nhatthanh020996.github.io/socket-programing-p2/</guid>
+      <description>1. End Points End points bao là những thành phần như: máy tính, máy tính bảng, điện thoại, server, máy in, &amp;hellip; là những thành phần đầu và cuối trong một kết nối internet.
+2. Network Interface Card - NIC. NIC bao gồm những thiết bị chúng ta thường gặp như wifi card, card mạng, &amp;hellip; Là thành phần giúp covert những loại tín hiệu như: electrical signal, light signal, radio signal về 1001 - tức data mà máy tính có thể hiểu.</description>
+    </item>
+    
+    <item>
+      <title>Computer Network (P2) - Berkeley Socket API</title>
+      <link>https://nhatthanh020996.github.io/socket-programming-p1/</link>
       <pubDate>Wed, 01 Nov 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://nhatthanh020996.github.io/socket-programming/</guid>
+      <guid>https://nhatthanh020996.github.io/socket-programming-p1/</guid>
       <description>1. Introduction. Socket là một trong những kiến thức low-level nhất và quan trọng nhất của computer networking. Nắm vững kiến thức về socket là tiền đề quan trọng để tiếp cận những kiến thức high-level hơn về computer networking như, TCP/IP protocol, HTTP, Websocket, SSH &amp;hellip; Bài viết này sẽ cung cấp cho bạn những kiến thức cơ bản sau:
 Lịch sử ra đời của ARPANET và TCP/IP.
 Tìm hiểu về Berkeley Socket API.</description>
