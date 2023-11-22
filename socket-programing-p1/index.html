@@ -36,7 +36,7 @@
 
     <title>Computer Network (P1) - Network components | breadcrumbscollector</title>
 
-    <link rel="canonical" href="/socket-programing-p2/">
+    <link rel="canonical" href="/socket-programing-p1/">
 
     
     
@@ -218,7 +218,57 @@
                 post-container">
 
                 
-                
+                <h3 id="1-end-points">1. End Points</h3>
+<p>End points bao là những thành phần như: máy tính, máy tính bảng, điện thoại, server, máy in, &hellip; là những thành phần đầu và cuối trong một kết nối internet.</p>
+<h3 id="2-network-interface-card---nic">2. Network Interface Card - NIC.</h3>
+<p>NIC bao gồm những thiết bị chúng ta thường gặp như wifi card, card mạng, &hellip; Là thành phần giúp covert những loại tín hiệu như: electrical signal, light signal, radio signal về 1001 - tức data mà máy tính có thể hiểu. Ngược lại NIC cũng giúp convert từ binary về các loại tín hiệu trên. Mỗi một end point sẽ có một thiết bị NIC nhất định, ngoài ra những thành phần khác cũng sở hữu một NIC ví dụ switch, router. Hình vẽ sau đây biểu thị một NIC - card dây lan của một máy tính.</p>
+<p>
+  <img src="/img/network1/nic.png" alt="">
+
+</p>
+<h3 id="3-network-media">3. Network media.</h3>
+<p>Network media là component giúp truyền các tín hiệu electrical signal, light signal, radio signal từ NIC này sang NIC khác trong mạng máy tính.
+
+  <img src="/img/network1/network-media.png" alt="">
+
+</p>
+<ul>
+<li>LAN Cable sẽ được dùng để truyền Eletrical Signal.</li>
+<li>Optical Fiber sẽ được dùng để truyền Light Signal.</li>
+<li>Air sẽ được dùng để truyền Radio Signal.</li>
+</ul>
+<h3 id="4-connector">4. Connector.</h3>
+<p>Connector là component để kết nối network media devices và NICs với nhau, vì vậy mà được coi như là một <code>connection point</code>. Thiết bị sau (phần màu vàng) là RJ45 là thiết bị kết nối LAN cable với một NIC của một chiếc laptop.</p>
+<p>
+  <img src="/img/network1/connector.png" alt="">
+
+</p>
+<h3 id="5-switch">5. Switch.</h3>
+<p>Switch là thiết bị để kể nối tất cả các End points lại với nhau để tạo thành một local network. Ví dụ được mô tả trong hình dưới đây.</p>
+<p>
+  <img src="/img/network1/switch.png" alt="">
+
+</p>
+<p>Một switch có nhiều ports và một port sẽ được kết nối với một end point khác nhau thông qua. Ngoài kết nối với end point, một switch có thể kết nối trực tiếp với một switch khác hoặc một router.</p>
+<h3 id="6-router">6. Router.</h3>
+<p>Sau khi có được một mạng nội bằng cách kết nối nhiều end points tới một switch như trên, để kết nối local network này với mạng internet ở bên ngoài, ta cần phải kết nối switch trên với một thiết bị là router.</p>
+<p>
+  <img src="/img/network1/router.png" alt="">
+
+</p>
+<p>Router sẽ làm 2 nhiệm vụ:</p>
+<ul>
+<li>Kết nối các mạng nội bộ lại với nhau.</li>
+<li>Tìm đường đi tốt nhất để forward data tới destination. Vấn đề này ta sẽ tìm hiểu rõ hơn ở những phần sau.</li>
+</ul>
+<p>Router này chính là đại diện của một local network với bên ngoài, tức là các thiết bị ở bên ngoài một mạng nội bộ thì chỉ biết địa chỉ IP của Router mà thôi, vì vậy địa chỉ IP của router chính là public address IP.</p>
+<h3 id="7-network-components">7. Network Components.</h3>
+<p>
+  <img src="/img/network1/router.png" alt="">
+
+</p>
+<p>Hình trên đã mô tả đẩy đủ cách mạng internet được hình thành từ các components trên. Hiểu được cơ bản mỗi component đảm nhận vai trò gì trong internet là tiền đề để ta có thể hiểu rõ hơn khi đi về chi tiết của mạng máy tính trong những bài viết sau. Cảm ơn các bạn đã theo dõi bài viết, hẹn gặp lại ở những bài viết sau.</p>
+
 
                 
 
@@ -227,15 +277,10 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/socket-programming-p2/" data-toggle="tooltip" data-placement="top" title="Computer Network (P2) - Berkeley Socket API">&larr;
+                        <a href="/socket-programing-p2/" data-toggle="tooltip" data-placement="top" title="Computer Network (P1) - Network components">&larr;
                             Previous Post</a>
                     </li>
                     
-                    
-                    <li class="next">
-                        <a href="/socket-programing-p1/" data-toggle="tooltip" data-placement="top" title="Computer Network (P1) - Network components">Next
-                            Post &rarr;</a>
-                    </li>
                     
                 </ul>
                 
