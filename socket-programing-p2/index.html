@@ -15,15 +15,15 @@
     
 
     
-    <meta name="title" content="Computer Network (P1) - Network components" />
-    <meta property="og:title" content="Computer Network (P1) - Network components" />
-    <meta property="twitter:title" content="Computer Network (P1) - Network components" />
+    <meta name="title" content="Computer Network (P2) - OSI Model" />
+    <meta property="og:title" content="Computer Network (P2) - OSI Model" />
+    <meta property="twitter:title" content="Computer Network (P2) - OSI Model" />
     
 
     
-    <meta name="description" content="Internet là tập hợp nhiều thiết bị tính toán được kết nối lại với nhau cho phép chúng ta có thể gửi tin nhắn, voice calls, video calls, online shoping ... Trong bài viết này mình sẽ nói về những network components chính của Internet">
-    <meta property="og:description" content="Internet là tập hợp nhiều thiết bị tính toán được kết nối lại với nhau cho phép chúng ta có thể gửi tin nhắn, voice calls, video calls, online shoping ... Trong bài viết này mình sẽ nói về những network components chính của Internet" />
-    <meta property="twitter:description" content="Internet là tập hợp nhiều thiết bị tính toán được kết nối lại với nhau cho phép chúng ta có thể gửi tin nhắn, voice calls, video calls, online shoping ... Trong bài viết này mình sẽ nói về những network components chính của Internet" />
+    <meta name="description" content="Trong bài viết này mình sẽ giới thiệu về OSI Model - Open System Interconnection Model, model này sẽ giúp chúng ta hiểu được cách mà data được truyền đi giữa các end points trong mạng INTERNET.">
+    <meta property="og:description" content="Trong bài viết này mình sẽ giới thiệu về OSI Model - Open System Interconnection Model, model này sẽ giúp chúng ta hiểu được cách mà data được truyền đi giữa các end points trong mạng INTERNET." />
+    <meta property="twitter:description" content="Trong bài viết này mình sẽ giới thiệu về OSI Model - Open System Interconnection Model, model này sẽ giúp chúng ta hiểu được cách mà data được truyền đi giữa các end points trong mạng INTERNET." />
     
 
     
@@ -34,7 +34,7 @@
     <meta name="keyword"  content="networing, operating system, computer architecture, python, socket programing, database">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Computer Network (P1) - Network components | breadcrumbscollector</title>
+    <title>Computer Network (P2) - OSI Model | breadcrumbscollector</title>
 
     <link rel="canonical" href="/socket-programing-p2/">
 
@@ -183,7 +183,7 @@
                         </a>
                         
                     </div>
-                    <h1>Computer Network (P1) - Network components</h1>
+                    <h1>Computer Network (P2) - OSI Model</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         
@@ -192,7 +192,7 @@
                                 Admin
                              
                             on 
-                            Saturday, November 4, 2023
+                            Tuesday, November 7, 2023
                             
                             
                             
@@ -218,7 +218,158 @@
                 post-container">
 
                 
-                
+                <h2 id="1-introduction">1. Introduction.</h2>
+<p>Trước khi đến đọc bài viết này, các bạn nên tham khảo bài viết trước <a href="https://nhatthanh020996.github.io/socket-programing-p1/">Link</a> này, việc nắm rõ các physical components trong một INTERNET là tiền đề để hiểu bài viết này rõ ràng, và dễ để tượng tượng hơn.</p>
+<p>Trong bài viết này, chúng ta sẽ tập trung để trả lời câu hỏi: Làm thế nào mà 2 máy tính có thể communicate được với nhau qua một computer network (chú ý computer network có thể là local network hoặc Internet)?.</p>
+<p>
+  <img src="/img/network2/how.png" alt="">
+
+</p>
+<h2 id="2-osi-model">2. OSI Model.</h2>
+<p>OSI Model được chia làm 7 layers bao gồm:</p>
+<ul>
+<li>Application Layer.</li>
+<li>Presentation Layer.</li>
+<li>Session Layer.</li>
+<li>Transport Layer.</li>
+<li>Network Layer.</li>
+<li>Data Link Layer.</li>
+<li>Physical Layer.</li>
+</ul>
+<p>
+  <img src="/img/network2/OSI.png" alt="">
+
+</p>
+<p>Hình trên mô tả cách mà data đi qua các network components (Hình ảnh hơi nhỏ, bạn có thể mở hình ảnh trong một tab riêng để xem rõ hơn). Sau đây mình sẽ giải thích cách mà data được xử lý khi đi qua mỗi layer trong sơ đồ trên.</p>
+<h3 id="21-application-layer">2.1. Application Layer.</h3>
+<p>Giả sử khi ta gõ vào thanh URL trong một tab của trình duyệt chrome: google.com, chrome sẽ giúp ta tạo HTTP message có bố cục như sau:</p>
+<pre tabindex="0"><code>GET / HTTP/1.1
+Host: www.google.com
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36
+Accept: text/html
+Connection: close
+</code></pre><p>Đây là content của một HTTP request message, bố cục của message trên thì được quy định tại link sau đây: <a href="https://datatracker.ietf.org/doc/html/rfc2616">https://datatracker.ietf.org/doc/html/rfc2616</a></p>
+<p>Message được đẩy xuống Presentation Layer.</p>
+<h3 id="22-presentation-layer">2.2. Presentation Layer.</h3>
+<p>Sau khi nhận message trên Application Layer, tại Presenation layer sẽ làm những việc sau:</p>
+<ul>
+<li><strong>Encryption/Decryption</strong>: Encrypt/Decryption message bằng symmetrical key - key được lấy sau khi thực hiện SSL Handshake (Thực ra quá trình thực hiện SSL Handshake sẽ diễn ra sau khi thiết lập TCP connection, nhưng ở đây, để đơn giản, ta coi như TCP connection đã được thiết lập từ trước đó).</li>
+<li><strong>Data Compression</strong>: Nén message sau khi encrypt sẽ được nén lại đến tiết kiệm chi phí và tăng performance khi được gửi đi trong computer network.</li>
+<li><strong>Translation</strong>: Convert trên message từ string (ASCII) về dạng binary.</li>
+</ul>
+<p>Lúc này message đã ở định dạng binary, sẽ đẩy xuống Transport Layer.</p>
+<h3 id="23-session-layer">2.3. Session Layer.</h3>
+<p>Session Layer sẽ làm những việc như sau:</p>
+<ul>
+<li>Yêu thiết lập TCP connection.</li>
+<li>Authentication.</li>
+<li>Authorization.</li>
+</ul>
+<p>Nếu như giải thích đẩy đủ, thì trước khi thực hiện những việc làm ở Presentation Layer, TCP connection sẽ phải được thiết lập. Sau khi TCP connection established, Session Layer sẽ không tham gia vào quá trình exchange data sau đó.</p>
+<h3 id="24-transport-layer">2.4. Transport Layer.</h3>
+<p>Có 2 loại protocol phổ biến được sử dụng ở layer này là: TCP và UDP.</p>
+<h4 id="241-tcp-protocol">2.4.1. TCP Protocol.</h4>
+<p>Transport Layer với TCP sẽ thực hiện những việc sau:</p>
+<ul>
+<li>
+<p><strong>Segmentation</strong>: Message nhận được từ layer trước đó sẽ được chia thành nhiều segments, mỗi một segment sẽ được add thêm vào bởi header. Với TCP protocol, kích thước của header sẽ từ 20-60 bytes (thông thường là 20 bytes, 40 bytes còn lại sẽ được sử dụng nếu cần thiết), hình vẽ dưới sẽ minh hoạ các thành phần của một TCP header: 
+  <img src="/img/network2/tcp-header.png" alt="">
+
+</p>
+<p>Một số phần chính trong header:</p>
+<ul>
+<li>
+<p><strong>Source Port Address</strong>: port được bind với client socket.</p>
+</li>
+<li>
+<p><strong>Destination Port Address</strong>: port đang được server sử dụng.</p>
+</li>
+<li>
+<p><strong>Checksum</strong>: dựa vào checksum, receiver kiểm tra xem trong quá trình data được chuyển đi trong network, liệu có segment có bị sửa đổi gì hay không.</p>
+</li>
+<li>
+<p><strong>Sequence Number</strong>: receiver sẽ dựa vào Sequence Number để sắp xếp lại segments theo đúng thứ tự để tạo nên message hoàn chỉnh.</p>
+</li>
+<li>
+<p><strong>Acknowledgement Number</strong>: khi  nhận segments thành công, Acknowledgement Number sẽ được gửi lại sender, thông báo receiver đã nhận message thành công. Nếu trong trường hợp segments không được gửi đến receiver, sẽ không có Acknowledgement Number nào được gửi về sender, sau một khoảng thời gian không thấy Acknowledgement Number này, sender sẽ tự động retransmit segment.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Flow Control</strong>: đảm bảo receiver sẽ không bị quá tải khi nhận data từ sender, và sender cũng sẽ gửi lượng data đúng với capability mà receiver của thể nhận được.</p>
+</li>
+<li>
+<p><strong>Error Control</strong>: Sử dụng Checksum trong header segment để kiểm tra xem segment có bị modify gì không trong quá trình segment đi qua network.</p>
+</li>
+</ul>
+<p>Ở Transport Layer, ta thu được tập hợp segments.</p>
+<h4 id="241-udp-protocol">2.4.1. UDP Protocol.</h4>
+<p>Transport Layer với UDP Protocol sẽ thực hiện những việc sau:</p>
+<ul>
+<li><strong>Segmentation</strong>: message cũng đưa chia nhỏ thành nhiều chunks, mỗi một chunk được add thêm UDP header, header có kích thước 8 bytes, các thành phần trong UDP header được mô tả trong hình vẽ dưới đây: 
+  <img src="/img/network2/udp-header.png" alt="">
+
+</li>
+<li><strong>Error Control</strong>: checksum tương tự TCP.</li>
+</ul>
+<p>Chú ý:
+- Khi sử dụng UDP protocol, không cần tạo connection trước khi thực hiện exchange data như TCP protocol.
+- Nếu segment bị mất trong quá trình exchange, receiver sẽ không gửi acknowledgement cho sender gửi lại segment, nên dẫn đến data loss.
+- UDP protocol sẽ không kiểm tra thứ tự của segment, vì vậy thứ tự của segments tại receiver sẽ có thể không đúng.
+<strong>Kết luận</strong>: UDP có performance tốt hơn TCP nhưng về reliability sẽ không bằng TCP.</p>
+<p>Một số services sử dụng UDP như: streaming video, song, DNS, &hellip;</p>
+<h3 id="25-network-layer">2.5. Network Layer.</h3>
+<p>Network layer nhận segments từ Transport layer, sẽ thực hiện những việc sau:</p>
+<ul>
+<li>
+<p><strong>Logical Addressing</strong>: IPv4 và IPv6 gọi là logical addresses, mỗi một segment sẽ được add thêm IP header vào để tạo thành một packet. IP header gồm các thông tin được mô tả trong hình vẽ sau: 
+  <img src="/img/network2/ip-header.png" alt="">
+
+</p>
+<ul>
+<li>
+<p><strong>Source Address</strong>: lúc này vẫn là private IP của máy tính, khi đi đến router của mạng nội bộ chúng ta, IP này sẽ bị thay bởi public IP của router *(NAT giúp ta làm điều này). Từ đó cho đến khi chạm destination, source IP sẽ không bị thay đổi.</p>
+</li>
+<li>
+<p><strong>Destination Address</strong>: Địa chỉ IP của destination, ở đây chỉ public IP của server.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Routing</strong>: Dựa vào <code>Destination Address</code> packets sẽ được route đến <code>hop</code> kế tiếp, data sẽ được forward từ <code>hop</code> này sang <code>hop</code> khác cho đến khi đến destination.</p>
+</li>
+<li>
+<p><strong>Path Determination</strong>: Sử dụng các thuật toán như: OSPF, BGP, IS-IS để tìm ra đường đi tốt nhất để route packet (phần này mình cũng mơ hồ, chưa tìm hiểu kỹ, khi tìm hiểu rồi sẽ update.)</p>
+</li>
+</ul>
+<h3 id="26-data-link-layer">2.6. Data Link Layer.</h3>
+<p>Data Link Layer sẽ nhận packets từ Network Layer, add thêm data link header và trailer vào mỗi packet để tạo thành một frame.</p>
+<p>
+  <img src="/img/network2/data-link.png" alt="">
+
+</p>
+<p>Khi đi qua 1 <code>hop</code>, header và trailer được add từ hop trước sẽ được bóc ra và gắn vào header và trailer mới tương ứng với <code>hop</code> đó. Header và trailer sẽ bao gồm các thành phần mô tả trong hình sau:</p>
+<p>
+  <img src="/img/network2/data-link-header.jpeg" alt="">
+
+</p>
+<h3 id="27-physical-layer">2.7. Physical Layer.</h3>
+<p>Physical Layer nhận frames từ Data Link Layer và chuyển từ binary data sang những physical signal như electrical signal, light signal, radio signal (xem lại bài viết viết về network component tại đây: <a href="https://nhatthanh020996.github.io/socket-programing-p1/">Link</a>)</p>
+<p>
+  <img src="/img/network2/physical-layer.png" alt="">
+
+</p>
+<p>Những tín hiệu vật lý sẽ được truyền đi từ <code>hop</code> này sang <code>hop</code> khác bởi network media như LAN cable, optical fiber hoặc air. Việc convert từ binary data sang physical signal sẽ được thực hiện bởi NICs, và chuyển sang dạng physical signal nào thì sẽ phụ thuộc vào network media network mà thiết bị đang sử dụng là gì.</p>
+<h2 id="3-reference">3. Reference.</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=KZfvO1DVpjw&amp;ab_channel=TechTerms">https://www.youtube.com/watch?v=KZfvO1DVpjw&amp;ab_channel=TechTerms</a></li>
+<li><a href="https://www.youtube.com/watch?v=jRU_ReDUaMY&amp;ab_channel=TechTerms">https://www.youtube.com/watch?v=jRU_ReDUaMY&amp;ab_channel=TechTerms</a></li>
+<li><a href="https://www.youtube.com/watch?v=iYdW0B1olLE&amp;t=156s&amp;ab_channel=TechTerms">https://www.youtube.com/watch?v=iYdW0B1olLE&amp;t=156s&amp;ab_channel=TechTerms</a></li>
+<li><a href="https://www.geeksforgeeks.org/difference-between-segments-packets-and-frames/">https://www.geeksforgeeks.org/difference-between-segments-packets-and-frames/</a></li>
+<li><a href="https://www.javatpoint.com/udp-protocol#:~:text=UDP%20Header%20Format,would%20be%2065%2C535%20minus%2020">https://www.javatpoint.com/udp-protocol#:~:text=UDP%20Header%20Format,would%20be%2065%2C535%20minus%2020</a></li>
+<li><a href="https://en.wikipedia.org/wiki/OSI_model">https://en.wikipedia.org/wiki/OSI_model</a></li>
+</ul>
+
 
                 
 
@@ -227,13 +378,13 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/socket-programming-p2/" data-toggle="tooltip" data-placement="top" title="Computer Network (P2) - Berkeley Socket API">&larr;
+                        <a href="/socket-programing-p1/" data-toggle="tooltip" data-placement="top" title="Computer Network (P1) - Network components">&larr;
                             Previous Post</a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/socket-programing-p1/" data-toggle="tooltip" data-placement="top" title="Computer Network (P1) - Network components">Next
+                        <a href="/socket-programming-p4/" data-toggle="tooltip" data-placement="top" title="Computer Network (P3) - Berkeley Socket API">Next
                             Post &rarr;</a>
                     </li>
                     

@@ -9,10 +9,10 @@
     <lastBuildDate>Fri, 10 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://nhatthanh020996.github.io/tags/networking/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Computer Network (P3) - Berkeley Socket API</title>
-      <link>https://nhatthanh020996.github.io/socket-programming-p2/</link>
+      <link>https://nhatthanh020996.github.io/socket-programming-p4/</link>
       <pubDate>Fri, 10 Nov 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://nhatthanh020996.github.io/socket-programming-p2/</guid>
+      <guid>https://nhatthanh020996.github.io/socket-programming-p4/</guid>
       <description>1. Introduction. Socket là một trong những kiến thức low-level nhất và quan trọng nhất của computer networking. Nắm vững kiến thức về socket là tiền đề quan trọng để tiếp cận những kiến thức high-level hơn về computer networking như, TCP/IP protocol, HTTP, Websocket, SSH &amp;hellip; Bài viết này sẽ cung cấp cho bạn những kiến thức cơ bản sau:
 Lịch sử ra đời của ARPANET và TCP/IP.
 Tìm hiểu về Berkeley Socket API.</description>
@@ -20,10 +20,10 @@ Tìm hiểu về Berkeley Socket API.</description>
     
     <item>
       <title>Computer Network (P2) - OSI Model</title>
-      <link>https://nhatthanh020996.github.io/socket-programing-p3/</link>
+      <link>https://nhatthanh020996.github.io/socket-programing-p2/</link>
       <pubDate>Tue, 07 Nov 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://nhatthanh020996.github.io/socket-programing-p3/</guid>
+      <guid>https://nhatthanh020996.github.io/socket-programing-p2/</guid>
       <description>1. Introduction. Trước khi đến đọc bài viết này, các bạn nên tham khảo bài viết trước Link này, việc nắm rõ các physical components trong một INTERNET là tiền đề để hiểu bài viết này rõ ràng, và dễ để tượng tượng hơn.
 Trong bài viết này, chúng ta sẽ tập trung để trả lời câu hỏi: Làm thế nào mà 2 máy tính có thể communicate được với nhau qua một computer network (chú ý computer network có thể là local network hoặc Internet)?</description>
     </item>
