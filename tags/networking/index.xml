@@ -24,7 +24,7 @@ Tìm hiểu về Berkeley Socket API.</description>
       <pubDate>Tue, 07 Nov 2023 00:00:00 +0000</pubDate>
       
       <guid>https://nhatthanh020996.github.io/socket-programing-p3/</guid>
-      <description>1. Introduction. Trước khi đến đọc bài viết này, các bạn nên tham khảo bài viết trước link này, việc nắm rõ các physical components trong một INTERNET là tiền đề để hiểu bài viết này rõ ràng hơn, và dễ để tượng tượng hơn.
+      <description>1. Introduction. Trước khi đến đọc bài viết này, các bạn nên tham khảo bài viết trước Link này, việc nắm rõ các physical components trong một INTERNET là tiền đề để hiểu bài viết này rõ ràng hơn, và dễ để tượng tượng hơn.
 Trong bài viết này, chúng ta sẽ tập trung để trả lời câu hỏi: Làm thế nào mà 2 máy tính có thể communicate được với nhau qua một computer network?</description>
     </item>
     
