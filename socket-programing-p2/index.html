@@ -226,7 +226,7 @@
 
 </p>
 <h2 id="2-osi-model">2. OSI Model.</h2>
-<p>OSI Model được chia làm 7 layers bao gồm:</p>
+<p>OSI Model partions data flow trong suốt quá trình communication thành 7 abstract layers, bao gồm</p>
 <ul>
 <li>Application Layer.</li>
 <li>Presentation Layer.</li>
@@ -240,7 +240,7 @@
   <img src="/img/network2/OSI.png" alt="">
 
 </p>
-<p>Hình trên mô tả cách mà data đi qua các network components (Hình ảnh hơi nhỏ, bạn có thể mở hình ảnh trong một tab riêng để xem rõ hơn). Sau đây mình sẽ giải thích cách mà data được xử lý khi đi qua mỗi layer trong sơ đồ trên.</p>
+<p>Hình trên mô tả sự thay đổi data flow trong communication system (Hình ảnh hơi nhỏ, bạn có thể mở hình ảnh trong một tab riêng để xem rõ hơn). Có những network components implement đầy đủ cả 7 abstract layers, nhưng cũng có những components chỉ implement một số layer nhất định, ví dụ: client và server implemtent đầy đủ 7 layers, trong khi đó switchs chỉ implement 2 layers cuối, routers chỉ implement 3 layers cuối. Sau đây mình sẽ giải thích cách mà data được xử lý khi đi qua mỗi layer trong sơ đồ trên.</p>
 <h3 id="21-application-layer">2.1. Application Layer.</h3>
 <p>Giả sử khi ta gõ vào thanh URL trong một tab của trình duyệt chrome: google.com, chrome sẽ giúp ta tạo HTTP message có bố cục như sau:</p>
 <pre tabindex="0"><code>GET / HTTP/1.1
