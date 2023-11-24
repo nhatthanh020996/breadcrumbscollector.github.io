@@ -12,7 +12,7 @@
       <pubDate>Tue, 14 Nov 2023 00:00:00 +0000</pubDate>
       
       <guid>https://nhatthanh020996.github.io/socket-programming-p4/</guid>
-      <description>Introduction. Trong bài viết này, mình sẽ sử dụng socket module - một standard module trong python để tạo socket. socket module thực ra là một wrapper của socket interface in C, vì vậy nó cũng sẽ có đẩy đủ những function như: bind(), listen(), connect(), accept(), recv(), send(), close(), shutdown(), &amp;hellip; socket module được sử dụng để tạo underlying webserver của hầu hết các webframework trong python như: Django, FastAPI, Flask</description>
+      <description>1. Introduction. Trong bài viết này, mình sẽ sử dụng socket module - một standard module trong python để tạo socket. socket module thực ra là một wrapper của socket interface in C, vì vậy nó cũng sẽ có đẩy đủ những function như: bind(), listen(), connect(), accept(), recv(), send(), close(), shutdown(), &amp;hellip; socket module được sử dụng để tạo underlying webserver của hầu hết các webframework trong python như: Django, FastAPI, Flask</description>
     </item>
     
     <item>
