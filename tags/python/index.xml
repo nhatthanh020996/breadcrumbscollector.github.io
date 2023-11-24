@@ -6,7 +6,16 @@
     <description>Recent content in python on breadcrumbscollector</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 25 Jun 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://nhatthanh020996.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 10 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://nhatthanh020996.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Computer Network (P4) - How To Create A TCP Client - Server in Python</title>
+      <link>https://nhatthanh020996.github.io/socket-programming-p4/</link>
+      <pubDate>Fri, 10 Nov 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://nhatthanh020996.github.io/socket-programming-p4/</guid>
+      <description>Introduction. Trong bài viết này, mình sẽ sử dụng socket module - một standard module trong python để tạo socket. socket module thực ra là một wrapper của socket interface in C, vì vậy nó cũng sẽ có đẩy đủ những function như: bind(), listen(), connect(), accept(), recv(), send(), close(), shutdown(), &amp;hellip; socket module được sử dụng để tạo underlying webserver của hầu hết các webframework trong python như: Django, FastAPI, Flask</description>
+    </item>
+    
     <item>
       <title>Clean Architecture</title>
       <link>https://nhatthanh020996.github.io/clean/architecture/</link>
